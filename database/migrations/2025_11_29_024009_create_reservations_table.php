@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('specialization_id')->index();
             $table->foreignId('doctor_id')->index();
             $table->foreignId('customer_id')->index();
-            $table->date("date");
+            $table->dateTime("date");
             $table->text("note")->nullable();
             $table->timestamps();
             $table->foreign('specialization_id')->references('id')->on('specializations')->onUpdate('cascade')->onDelete('cascade');

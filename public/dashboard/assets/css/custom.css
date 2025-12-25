@@ -1,0 +1,89 @@
+.list-group-item-action.active,
+.list-group-item-action.active:hover,
+.list-group-item-action.active:focus {
+    border-color: #17ae83 !important;
+    background-color: #17ae83 !important;
+}
+
+.imgPreview,
+.coverImgPreview {
+    display: block;
+    width: 100%;
+    border: 1px solid #7366ff;
+    border-radius: 7px;
+    padding: 10px;
+    height: 180px;
+    text-align: center;
+    margin-top: 15px;
+}
+.coverImgPreview {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.imgPreview > img,
+.coverImgPreview > img {
+    max-height: 100%;
+}
+
+.coverImgPreview::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.coverImgPreview::-webkit-scrollbar-track {
+    background: #f9f9f9;
+}
+
+/* Handle */
+.coverImgPreview::-webkit-scrollbar-thumb {
+    background: #7366ff;
+}
+
+.coverImgPreview > img {
+    max-height: 100%;
+    margin: 5px;
+}
+.dimgPreview {
+    display: block;
+    width: 100%;
+    border: 1px solid #7366ff;
+    border-radius: 7px;
+    padding: 10px;
+    height: 180px;
+    text-align: center;
+    margin-top: 15px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.dimgPreview::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.dimgPreview::-webkit-scrollbar-track {
+    background: #f9f9f9;
+}
+
+/* Handle */
+.dimgPreview::-webkit-scrollbar-thumb {
+    background: #7366ff;
+}
+
+.dimgPreview > div {
+    display: inline-block;
+    /* width: 150px; */
+}
+
+.dimgPreview > div > img {
+    height: 170px !important;
+    margin: 11px;
+    display: block;
+}
+
+.dimgPreview > div > button {
+    position: relative;
+    margin-left: -40px !important;
+    margin-right: -40px !important;
+    margin-top: -370px;
+}

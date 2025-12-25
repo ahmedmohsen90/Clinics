@@ -220,12 +220,12 @@ return [
              * If the message content is empty it won't be added to the redirection.
              */
             'redirect' => [
-                'url' => '/home',
+                'url' => (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '/',
                 'message' => [
-                    'key' => 'error',
-                    'content' => '',
-                ],
-            ],
+                    'key' => 'faild',
+                    'content' => 'Have No Permission To Access This Page'
+                ]
+            ]
         ],
     ],
 

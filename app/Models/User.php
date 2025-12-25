@@ -29,4 +29,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function profile()
+    {
+        return $this->morphOne(Media::class, 'mediaable')->where('type', 'profile')->latest();
+    }
+
+    public function details()
+    {
+        return $this->hasOne(UserDetail::class, 'user_id');
+    }
 }
