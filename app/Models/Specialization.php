@@ -8,4 +8,9 @@ class Specialization extends Model
 {
     //
     protected $guarded = [];
+
+    public function doctors()
+    {
+        return $this->hasMany(SpecializationDoctor::class, 'specialization_id');
+    }
 }

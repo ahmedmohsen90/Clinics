@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Middleware\Lang;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,24 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('deleted', [AdminController::class, 'deleted']);
             Route::get('restore/{id}', [AdminController::class, 'restore']);
             Route::get('force_delete', [AdminController::class, 'force_delete']);
+        });
+
+        Route::group(['prefix' => 'specializations'], function () {
+            Route::get('', [SpecializationController::class, 'index']);
+            Route::get('create', [SpecializationController::class, 'create']);
+            Route::get('edit/{id}', [SpecializationController::class, 'edit']);
+            Route::post('create', [SpecializationController::class, 'store']);
+            Route::post('update/{id}', [SpecializationController::class, 'update']);
+            Route::post('delete', [SpecializationController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'doctors'], function () {
+            Route::get('', [DoctorController::class, 'index']);
+            Route::get('create', [DoctorController::class, 'create']);
+            Route::get('edit/{id}', [DoctorController::class, 'edit']);
+            Route::post('create', [DoctorController::class, 'store']);
+            Route::post('update/{id}', [DoctorController::class, 'update']);
+            Route::post('delete', [DoctorController::class, 'destroy']);
         });
     });
 });

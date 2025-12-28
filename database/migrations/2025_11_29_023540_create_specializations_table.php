@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('specializations', function (Blueprint $table) {
             $table->id();
             $table->string("name",50);
-            $table->double("amount",8,2)->default(0);
+            $table->double("price",8,2)->default(0);
             $table->timestamps();
         });
     }
