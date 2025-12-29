@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Doctor;
 use App\Models\Reservation;
 use App\Models\Specialization;
 use Carbon\Carbon;
@@ -57,7 +58,7 @@ class ReservationController extends Controller
         ]);
 
         $time = Carbon::createFromFormat('g:ia', $request->time)
-              ->format('H:i:s');
+            ->format('H:i:s');
 
         $reservation = new Reservation();
         $reservation->customer_id = $request->customer;
@@ -78,19 +79,25 @@ class ReservationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $specializations = Specialization::get();
+        $customers = Customer::get();
+        $reservation = Reservation::find($id);
+
+        $doctors = Doctor::whereHas('specializations', function ($query) use ($reservation) {
+            $query->where('specialization_id', $reservation->specialization_id);
+        })->get();
+
+        return view('admin.reservations.edit', [
+            'title' => trans('admin.Add New Reservation'),
+            'specializations' => $specializations,
+            'customers' => $customers,
+            'reservation' => $reservation,
+            'doctors' => $doctors,
+        ]);
     }
 
     /**
@@ -98,14 +105,57 @@ class ReservationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'customer'          => 'required',
+            'specialization'          => 'required',
+            'doctor'          => 'required',
+            'date'          => 'required',
+            'time'          => 'required',
+        ], [], [
+            'customer'          => trans('admin.Customer'),
+            'specialization'          => trans('admin.Specialization'),
+            'doctor'          => trans('admin.Doctor'),
+            'date'          => trans('admin.Date'),
+            'time'          => trans('admin.Time'),
+        ]);
+
+        $time = Carbon::createFromFormat('g:ia', $request->time)
+            ->format('H:i:s');
+
+        $reservation = Reservation::find($id);
+        $reservation->customer_id = $request->customer;
+        $reservation->specialization_id = $request->specialization;
+        $reservation->doctor_id = $request->doctor;
+        $reservation->date = Carbon::parse($request->date);
+        $reservation->time = $time;
+        $reservation->save();
+
+        userLogs([
+            'model' => '\App\Models\Reservation',
+            'model_id' => $reservation->id,
+            'description_ar' => 'تحديث بيانات الحجز',
+            'description_en' => 'Update Reservation Details',
+            'status' => 'update'
+        ]);
+        return redirect(aurl('reservations'))->with('success', 'operation success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $case = Reservation::find($request->reservation_id);
+        if ($case) {
+            $case->delete();
+        }
+        userLogs([
+            'model' => '\App\Models\Reservation',
+            'model_id' => $request->reservation_id,
+            'description_ar' => 'حذف الحجز',
+            'description_en' => 'Delete Reservation',
+            'status' => 'delete'
+        ]);
+        return back()->with('success', 'operation success');
     }
 }

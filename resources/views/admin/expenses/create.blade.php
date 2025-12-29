@@ -6,20 +6,20 @@
     <div class="col-md-12 col-xl-12">
         <div class="card">
             <h5 class="card-header">{{ $title }}</h5>
-            <form action="{{ aurl('specializations/create') }}" enctype="multipart/form-data" method="POST">
+            <form action="{{ aurl('expenses/create') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
+                        <label class="floating-label" for="amount">{{ trans('admin.Amount') }} <span
                                 class="redStar">*</span></label>
-                        <input type="text" name="name" value="{{ old('name') }}" class="form-control"
-                            id="name">
+                        <input type="text" name="amount" value="{{ old('amount') }}" class="form-control"
+                            id="amount">
                     </div>
                     <div class="mb-3">
-                        <label class="floating-label" for="price">{{ trans('admin.Price') }} <span
+                        <label class="floating-label" for="description">{{ trans('admin.Description') }} <span
                                 class="redStar">*</span></label>
-                        <input type="text" name="price" value="{{ old('price') }}" class="form-control"
-                            id="price">
+                        <input type="text" name="description" value="{{ old('description') }}" class="form-control"
+                            id="description">
                     </div>
 
                 </div>

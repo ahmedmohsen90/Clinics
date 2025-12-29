@@ -9,13 +9,13 @@
             <form action="{{ aurl('specializations/update/'.$specialization->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="name" value="{{ $specialization->name }}" class="form-control"
                             id="name">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="price">{{ trans('admin.Price') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="price" value="{{ $specialization->price }}" class="form-control"

@@ -9,28 +9,28 @@
             <form action="{{ aurl('customers/create') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="name" value="{{ old('name') }}" class="form-control"
                             id="name">
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="mobile">{{ trans('admin.Mobile') }} <span
                                 class="redStar">*</span></label>
                         <input type="number" name="mobile" value="{{ old('mobile') }}" class="form-control"
                             id="mobile">
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="job">{{ trans('admin.Job') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="job" value="{{ old('job') }}" class="form-control"
                             id="job">
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="age">{{ trans('admin.Age') }} <span
                                 class="redStar">*</span></label>
                         <input type="number" name="age" value="{{ old('age') }}" class="form-control"

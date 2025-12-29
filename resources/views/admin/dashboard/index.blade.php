@@ -8,7 +8,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-chart-pie"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ number_format($reportToday, 2) }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Profit Today') }}</p>
                 </div>
@@ -22,7 +22,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-warning"><i class="fas fa-chart-line"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ number_format($reportWeek, 2) }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Profit Week') }}</p>
                 </div>
@@ -36,7 +36,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-danger"><i class="fas fa-chart-bar"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ number_format($reportMonth, 2) }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Profit Month') }}</p>
                 </div>
@@ -50,7 +50,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-info"><i class="fas fa-chart-area"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ number_format($allReport, 2) }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.All Profits') }}</p>
                 </div>
@@ -66,7 +66,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-chart-pie"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ $casestoday }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Cases Today') }}</p>
                 </div>
@@ -80,7 +80,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-warning"><i class="fas fa-chart-line"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ $casesweek }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Cases Week') }}</p>
                 </div>
@@ -94,7 +94,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-danger"><i class="fas fa-chart-bar"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ $casesmonth }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Cases Month') }}</p>
                 </div>
@@ -108,7 +108,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-info"><i class="fas fa-chart-area"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ $casesAll }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.All Cases') }}</p>
                 </div>
@@ -166,7 +166,8 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
-                            <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-user-injured"></i></span>
+                            <span class="avatar-initial rounded bg-label-primary"><i
+                                    class="fas fa-user-injured"></i></span>
                         </div>
                         <h4 class="ms-1 mb-0">{{ $reservationsToday }}</h4>
                     </div>
@@ -258,7 +259,7 @@
                                 "{{ trans('admin.December') }}",
                             ],
                             datasets: [{
-                                    label: "{{ trans('admin.Count') }}",
+                                    label: "{{ trans('admin.Cases') }}",
                                     data: [
                                         orderArr[1],
                                         orderArr[2],
@@ -286,18 +287,18 @@
                                 {
                                     label: "{{ trans('admin.Total') }}",
                                     data: [
-                                        orderArr[1],
-                                        orderArr[2],
-                                        orderArr[3],
-                                        orderArr[4],
-                                        orderArr[5],
-                                        orderArr[6],
-                                        orderArr[7],
-                                        orderArr[8],
-                                        orderArr[9],
-                                        orderArr[10],
-                                        orderArr[11],
-                                        orderArr[12],
+                                        {{ isset($ordersSum[1]) ? $ordersSum[1] : 0 }},
+                                        {{ isset($ordersSum[2]) ? $ordersSum[2] : 0 }},
+                                        {{ isset($ordersSum[3]) ? $ordersSum[3] : 0 }},
+                                        {{ isset($ordersSum[4]) ? $ordersSum[4] : 0 }},
+                                        {{ isset($ordersSum[5]) ? $ordersSum[5] : 0 }},
+                                        {{ isset($ordersSum[6]) ? $ordersSum[6] : 0 }},
+                                        {{ isset($ordersSum[7]) ? $ordersSum[7] : 0 }},
+                                        {{ isset($ordersSum[8]) ? $ordersSum[8] : 0 }},
+                                        {{ isset($ordersSum[9]) ? $ordersSum[9] : 0 }},
+                                        {{ isset($ordersSum[10]) ? $ordersSum[10] : 0 }},
+                                        {{ isset($ordersSum[11]) ? $ordersSum[11] : 0 }},
+                                        {{ isset($ordersSum[12]) ? $ordersSum[12] : 0 }}
                                     ],
 
                                     borderColor: '#b28105',
@@ -328,7 +329,10 @@
                                     borderColor: borderColor
                                 },
                                 legend: {
-                                    display: false
+                                    display: true,
+                                    labels: {
+                                        color: legendColor
+                                    }
                                 }
                             },
 

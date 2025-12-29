@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CustomerCaseController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataEntryController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SpecializationController;
@@ -94,5 +97,31 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('update/{id}', [ReservationController::class, 'update']);
             Route::post('delete', [ReservationController::class, 'destroy']);
         });
+
+        Route::group(['prefix' => 'expenses'], function () {
+            Route::get('', [ExpenseController::class, 'index']);
+            Route::get('create', [ExpenseController::class, 'create']);
+            Route::get('edit/{id}', [ExpenseController::class, 'edit']);
+            Route::post('create', [ExpenseController::class, 'store']);
+            Route::post('update/{id}', [ExpenseController::class, 'update']);
+            Route::post('delete', [ExpenseController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'cases'], function () {
+            Route::get('', [CustomerCaseController::class, 'index']);
+            Route::get('create', [CustomerCaseController::class, 'create']);
+            Route::get('edit/{id}', [CustomerCaseController::class, 'edit']);
+            Route::get('view/{id}', [CustomerCaseController::class, 'show']);
+            Route::post('create', [CustomerCaseController::class, 'store']);
+            Route::post('update/{id}', [CustomerCaseController::class, 'update']);
+            Route::post('delete', [CustomerCaseController::class, 'destroy']);
+            Route::get('status/{status}/{id}', [CustomerCaseController::class, 'status']);
+        });
+
+        Route::group(['prefix' => 'reports'], function () {
+            Route::get('{filter}', [ReportController::class, 'index']);
+            Route::get('view/{id}', [ReportController::class, 'show']);
+        });
+
     });
 });

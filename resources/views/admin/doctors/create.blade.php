@@ -9,13 +9,13 @@
             <form action="{{ aurl('doctors/create') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="name" value="{{ old('name') }}" class="form-control"
                             id="name">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="floating-label" for="mobile">{{ trans('admin.Mobile') }} <span
                                 class="redStar">*</span></label>
                         <input type="number" name="mobile" value="{{ old('mobile') }}" class="form-control"

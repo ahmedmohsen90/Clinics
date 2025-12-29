@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->text('description');
+            $table->morphs('reportable');
             $table->double('amount', 8, 2);
             $table->enum('operation', ['plus', 'minus'])->{'plus'};
             $table->timestamps();

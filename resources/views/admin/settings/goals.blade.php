@@ -7,7 +7,7 @@
                 <div class="card">
                     <h5 class="card-header">{{ $title }}</h5>
                     <div class="card-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="goals">{{ trans('admin.Goals') }}</label>
                             <input type="number" value="{{ $setting->goals }}" name="goals" class="form-control"
                                 id="goals">

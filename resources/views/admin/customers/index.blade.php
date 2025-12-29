@@ -50,6 +50,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $customers->links('admin.pagination.index') }}
                     </div>
                 </div>
             </div>

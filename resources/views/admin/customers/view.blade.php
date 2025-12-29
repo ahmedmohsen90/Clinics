@@ -120,7 +120,7 @@
                 <form action="{{ aurl('areas/delivery/create') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="delivery">{{ trans('admin.Price') }}</label>
                             <input type="text" name="delivery" class="form-control">
                         </div>
@@ -147,15 +147,15 @@
                 <form action="{{ aurl('areas/create') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="name_ar">{{ trans('admin.Name Ar') }}</label>
                             <input type="text" name="name_ar" class="form-control">
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="name_en">{{ trans('admin.Name En') }}</label>
                             <input type="text" name="name_en" class="form-control">
                         </div>
-                        {{-- <div class="form-group">
+                        {{-- <div class="mb-3">
                             <label class="floating-label" for="delivery">{{ trans('admin.Delivery') }}</label>
                             <input type="text" name="delivery" class="form-control">
                         </div> --}}
@@ -183,17 +183,17 @@
                 <form action="{{ aurl('areas/update') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="name_ar">{{ trans('admin.Name Ar') }}</label>
                             <input type="text" name="name_ar" placeholder="{{ trans('admin.Name Ar') }}"
                                 class="form-control" id="name_ar">
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="name_en">{{ trans('admin.Name En') }}</label>
                             <input type="text" name="name_en" class="form-control" placeholder="trans('admin.Name En')"
                                 id="name_en">
                         </div>
-                        {{-- <div class="form-group">
+                        {{-- <div class="mb-3">
                             <label class="floating-label" for="delivery">{{ trans('admin.Delivery') }}</label>
                             <input type="text" id="delivery" name="delivery" placeholder="{{ trans('admin.Delivery') }}"
                                 class="form-control">

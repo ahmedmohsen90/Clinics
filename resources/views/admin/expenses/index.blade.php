@@ -4,9 +4,9 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('reservations/create') }}"
+                    <a href="{{ aurl('expenses/create') }}"
                         class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Reservation') }}</a>
+                        {{ trans('admin.Add New Expense') }}</a>
                 </h5>
             </div>
             <div class="card-block row">
@@ -15,37 +15,23 @@
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>{{ trans('admin.Name') }}</th>
-                                    <th>{{ trans('admin.Mobile') }}</th>
-                                    <th>{{ trans('admin.Specialization') }}</th>
-                                    <th>{{ trans('admin.Doctor') }}</th>
-                                    <th>{{ trans('admin.Date') }}</th>
+                                    <th>{{ trans('admin.Amount') }}</th>
+                                    <th>{{ trans('admin.Description') }}</th>
                                     <th>{{ trans('admin.Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reservations as $reservation)
+                                @foreach ($expenses as $expense)
                                     <tr>
-                                        <td>{{ $reservation->customer->name }}</td>
-                                        <td>{{ $reservation->customer->mobile }}</td>
-                                        <td>{{ $reservation->specialization->name }}</td>
-                                        <td>{{ $reservation->doctor->name }}</td>
-                                        <td><i class="fas fa-calendar-alt"></i> {{ $reservation->date }} <br>
-                                            <i class="fas fa-clock"></i> {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->time)->format('g:ia') }}
-                                        </td>
-
+                                        <td>{{ number_format($expense->amount, 2) }}</td>
+                                        <td>{{ $expense->description }}</td>
                                         <td>
-                                            <a href="{{ aurl('reservations/view/' . $reservation->id) }}"
-                                                class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                    class="fas fa-eye"></i>
-                                                {{ trans('admin.Details') }}</a>
-
-                                            <a href="{{ aurl('reservations/edit/' . $reservation->id) }}"
+                                            <a href="{{ aurl('expenses/edit/' . $expense->id) }}"
                                                 class="btn btn-pill btn-outline-warning btn-air-warning"><i
                                                     class="fas fa-edit"></i>
                                                 {{ trans('admin.Edit') }}</a>
 
-                                            <button data-id="{{ $reservation->id }}" data-name="{{ $reservation->name }}"
+                                            <button data-id="{{ $expense->id }}" data-name="{{ $expense->name }}"
                                                 id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
                                                     class="fas fa-trash"></i>
                                                 {{ trans('admin.Delete') }}</button>
@@ -54,7 +40,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $reservations->links('admin.pagination.index') }}
+                        {{ $expenses->links('admin.pagination.index') }}
                     </div>
                 </div>
             </div>
@@ -69,13 +55,13 @@
                     <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Delete') }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ aurl('reservations/delete') }}" method="POST">
+                <form action="{{ aurl('expenses/delete') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="col-md-12 text-center">
-                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="reservationName"></p>
+                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="expenseName"></p>
                         </div>
-                        <input type="hidden" id="reservation_id" name="reservation_id" value="">
+                        <input type="hidden" id="expense_id" name="expense_id" value="">
                     </div>
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
@@ -92,10 +78,10 @@
         <script>
             $(document).ready(function() {
                 $("#delete ").click(function() {
-                    var reservationName = $(this).attr('data-name');
-                    var reservationId = $(this).attr('data-id');
-                    $("#reservationName").text(reservationName);
-                    $("#reservation_id").val(reservationId);
+                    var expenseName = $(this).attr('data-name');
+                    var expenseId = $(this).attr('data-id');
+                    $("#expenseName").text(expenseName);
+                    $("#expense_id").val(expenseId);
                     $("#deleteModal").modal('show');
                 });
 

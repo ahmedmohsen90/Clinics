@@ -10,11 +10,11 @@
                 <div class="card">
                     <h5 class="card-header">{{ $title }}</h5>
                     <div class="card-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="terms_ar">{{ trans('admin.About Ar') }}</label>
                             <textarea class="form-control" name="terms_ar" id="terms_ar" rows="10">{{ $setting->terms_ar }}</textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="floating-label" for="terms_en">{{ trans('admin.About En') }}</label>
                             <textarea class="form-control" name="terms_en" id="terms_en" rows="10">{{ $setting->terms_en }}</textarea>
                         </div>
