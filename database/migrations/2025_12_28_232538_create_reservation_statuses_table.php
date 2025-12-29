@@ -11,18 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
+        Schema::create('reservation_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('specialization_id')->index();
-            $table->foreignId('doctor_id')->index();
-            $table->foreignId('customer_id')->index();
-            $table->date("date");
-            $table->time("time");
-            $table->text("note")->nullable();
+            $table->enum('status',['pending','done','updated','canceled','expired']);
             $table->timestamps();
             $table->foreign('specialization_id')->references('id')->on('specializations')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('doctor_id')->references('id')->on('doctors')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('reservation_statuses');
     }
 };

@@ -117,6 +117,50 @@
     </div>
 
     <div class="row">
+        <div class="col-sm-4 col-lg-4 mb-4">
+            <div class="card card-border-shadow-primary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2 pb-1">
+                        <div class="avatar me-2">
+                            <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-user-md"></i></span>
+                        </div>
+                        <h4 class="ms-1 mb-0">{{ $doctors }}</h4>
+                    </div>
+                    <p class="mb-1">{{ trans('admin.Doctors') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-lg-4 mb-4">
+            <div class="card card-border-shadow-info">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2 pb-1">
+                        <div class="avatar me-2">
+                            <span class="avatar-initial rounded bg-label-info"><i class="fas fa-clinic-medical"></i></span>
+                        </div>
+                        <h4 class="ms-1 mb-0">{{ $specializations }}</h4>
+                    </div>
+                    <p class="mb-1">{{ trans('admin.Specializations') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-lg-4 mb-4">
+            <div class="card card-border-shadow-success">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2 pb-1">
+                        <div class="avatar me-2">
+                            <span class="avatar-initial rounded bg-label-success"><i class="fas fa-users"></i></span>
+                        </div>
+                        <h4 class="ms-1 mb-0">{{ $customers }}</h4>
+                    </div>
+                    <p class="mb-1">{{ trans('admin.Customers') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-sm-6 col-lg-6 mb-4">
             <div class="card card-border-shadow-primary">
                 <div class="card-body">
@@ -124,7 +168,7 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-user-injured"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ $reservationsToday }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Reservations Today') }}</p>
                 </div>
@@ -132,13 +176,13 @@
         </div>
 
         <div class="col-sm-6 col-lg-6 mb-4">
-            <div class="card card-border-shadow-warning">
+            <div class="card card-border-shadow-danger">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
-                            <span class="avatar-initial rounded bg-label-warning"><i class="fas fa-user-nurse"></i></span>
+                            <span class="avatar-initial rounded bg-label-danger"><i class="fas fa-user-nurse"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">0</h4>
+                        <h4 class="ms-1 mb-0">{{ $reservations }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.All Reservations') }}</p>
                 </div>

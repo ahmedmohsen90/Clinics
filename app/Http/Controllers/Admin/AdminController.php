@@ -22,7 +22,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = User::with('profile')->where('id', '!=', '1')->latest()->paginate(30);
+        $admins = User::whereHasRole('admin')->with('profile')->where('id', '!=', '1')->latest()->paginate(30);
         return view('admin.admins.index', [
             'title' => trans('admin.All Admins'),
             'admins' => $admins
@@ -129,17 +129,6 @@ class AdminController extends Controller
             'status' => 'create'
         ]);
         return redirect(aurl('admins'))->with('success', 'operation success');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

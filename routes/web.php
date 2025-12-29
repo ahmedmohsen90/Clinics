@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DataEntryController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Middleware\Lang;
@@ -46,6 +49,15 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('force_delete', [AdminController::class, 'force_delete']);
         });
 
+        Route::group(['prefix' => 'data_entries'], function () {
+            Route::get('', [DataEntryController::class, 'index']);
+            Route::get('create', [DataEntryController::class, 'create']);
+            Route::get('edit/{id}', [DataEntryController::class, 'edit']);
+            Route::post('create', [DataEntryController::class, 'store']);
+            Route::post('update/{id}', [DataEntryController::class, 'update']);
+            Route::post('delete', [DataEntryController::class, 'destroy']);
+        });
+
         Route::group(['prefix' => 'specializations'], function () {
             Route::get('', [SpecializationController::class, 'index']);
             Route::get('create', [SpecializationController::class, 'create']);
@@ -59,9 +71,28 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('', [DoctorController::class, 'index']);
             Route::get('create', [DoctorController::class, 'create']);
             Route::get('edit/{id}', [DoctorController::class, 'edit']);
+            Route::get('by_specialization/{id}', [DoctorController::class, 'by_specialization']);
             Route::post('create', [DoctorController::class, 'store']);
             Route::post('update/{id}', [DoctorController::class, 'update']);
             Route::post('delete', [DoctorController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'customers'], function () {
+            Route::get('', [CustomerController::class, 'index']);
+            Route::get('create', [CustomerController::class, 'create']);
+            Route::get('edit/{id}', [CustomerController::class, 'edit']);
+            Route::post('create', [CustomerController::class, 'store']);
+            Route::post('update/{id}', [CustomerController::class, 'update']);
+            Route::post('delete', [CustomerController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'reservations'], function () {
+            Route::get('', [ReservationController::class, 'index']);
+            Route::get('create', [ReservationController::class, 'create']);
+            Route::get('edit/{id}', [ReservationController::class, 'edit']);
+            Route::post('create', [ReservationController::class, 'store']);
+            Route::post('update/{id}', [ReservationController::class, 'update']);
+            Route::post('delete', [ReservationController::class, 'destroy']);
         });
     });
 });

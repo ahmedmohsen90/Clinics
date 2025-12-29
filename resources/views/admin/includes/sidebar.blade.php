@@ -96,6 +96,25 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ openMenu('/data_entries') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-user-edit"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Data Entries') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('/data_entries') }}">
+                    <a href="{{ aurl('data_entries') }}" class="menu-link">
+                        <div>{{ trans('admin.All Data Entries') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('/data_entries/create') }}">
+                    <a href="{{ aurl('data_entries/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Data Entry') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li class="menu-item {{ openMenu('/specializations') }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fas fa-clinic-medical"></i>&nbsp;&nbsp;
@@ -161,12 +180,12 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ activeMenu('/reservations') }}">
                     <a href="{{ aurl('reservations') }}" class="menu-link">
-                        <div>{{ trans('admin.All Users') }}</div>
+                        <div>{{ trans('admin.All Reservations') }}</div>
                     </a>
                 </li>
                 <li class="menu-item {{ activeMenu('/reservations/create') }}">
                     <a href="{{ aurl('reservations/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New User') }}</div>
+                        <div>{{ trans('admin.Add New Reservation') }}</div>
                     </a>
                 </li>
             </ul>

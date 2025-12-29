@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\Specialization;
 use App\Models\SpecializationDoctor;
+use Exception;
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
@@ -19,6 +20,22 @@ class DoctorController extends Controller
             'title' => trans('admin.All Doctors'),
             'doctors' => Doctor::with('specializations.specialization')->get()
         ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function by_specialization(int $id)
+    {
+        try {
+            $doctors = Doctor::whereHas('specializations', function ($query) use ($id) {
+                $query->where('specialization_id', $id);
+            })->get();
+
+            return responseSuccess('doctors', $doctors);
+        } catch (Exception $ex) {
+            return responseValid($ex);
+        }
     }
 
     /**

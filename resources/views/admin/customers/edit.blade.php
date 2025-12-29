@@ -6,33 +6,35 @@
     <div class="col-md-12 col-xl-12">
         <div class="card">
             <h5 class="card-header">{{ $title }}</h5>
-            <form action="{{ aurl('doctors/update/' . $doctor->id) }}" enctype="multipart/form-data" method="POST">
+            <form action="{{ aurl('customers/update/'.$customer->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
                                 class="redStar">*</span></label>
-                        <input type="text" name="name" value="{{ $doctor->name }}" class="form-control"
+                        <input type="text" name="name" value="{{ $customer->name }}" class="form-control"
                             id="name">
                     </div>
+
                     <div class="form-group">
                         <label class="floating-label" for="mobile">{{ trans('admin.Mobile') }} <span
                                 class="redStar">*</span></label>
-                        <input type="number" name="mobile" value="{{ $doctor->mobile }}" class="form-control"
+                        <input type="number" name="mobile" value="{{ $customer->mobile }}" class="form-control"
                             id="mobile">
                     </div>
 
-                    <div class="mb-3">
-                        <label for="specializations" class="form-label">{{ trans('admin.Specializations') }}</label>
-                        <div class="select2-primary">
-                            <select id="specializations" name="specializations[]" class="select2 form-select" multiple>
-                                @foreach ($specializations as $specialization)
-                                    <option
-                                        {{ in_array($specialization->id, $specializationsDoctors->toArray()) ? 'selected' : '' }}
-                                        value="{{ $specialization->id }}">{{ $specialization->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label class="floating-label" for="job">{{ trans('admin.Job') }} <span
+                                class="redStar">*</span></label>
+                        <input type="text" name="job" value="{{ $customer->job }}" class="form-control"
+                            id="job">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="floating-label" for="age">{{ trans('admin.Age') }} <span
+                                class="redStar">*</span></label>
+                        <input type="number" name="age" value="{{ $customer->age }}" class="form-control"
+                            id="age">
                     </div>
 
                 </div>
