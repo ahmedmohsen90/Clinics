@@ -4,9 +4,9 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('customers/create') }}"
+                    <a href="{{ aurl('insurance_companies/create') }}"
                         class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Customer') }}</a>
+                        {{ trans('admin.Add New Company') }}</a>
                 </h5>
             </div>
             <div class="card-block row">
@@ -16,40 +16,40 @@
                             <thead>
                                 <tr>
                                     <th>{{ trans('admin.Name') }}</th>
-                                    <th>{{ trans('admin.Mobile') }}</th>
-                                    <th>{{ trans('admin.Job') }}</th>
-                                    <th>{{ trans('admin.Age') }}</th>
-                                    <th>{{ trans('admin.Insurance Companies') }}</th>
+                                    <th>{{ trans('admin.Status') }}</th>
                                     <th>{{ trans('admin.Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customers as $customer)
+                                @foreach ($insurance_companies as $company)
                                     <tr>
-                                        <td>{{ $customer->name }}</td>
-                                        <td>{{ $customer->mobile }}</td>
-                                        <td>{{ $customer->job }}</td>
-                                        <td>{{ $customer->age }}</td>
+                                        <td>{{ $company->name }}</td>
                                         <td>
-                                            @if (isset($customer->company->company))
-                                                <span class="badge text-bg-success">{{ $customer->company->company->name }}</span>
+                                            @if ($company->status == 1)
+                                                <i class="fas fa-check text-success"></i>
                                             @else
-                                                <span class="badge text-bg-danger">{{ trans('admin.Does not belong') }}</span>
+                                                <i class="fas fa-times text-danger"></i>
                                             @endif
                                         </td>
-
                                         <td>
-                                            <a href="{{ aurl('customers/view/' . $customer->id) }}"
-                                                class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                    class="fas fa-eye"></i>
-                                                {{ trans('admin.View') }}</a>
+                                            @if ($company->status == 1)
+                                                <a href="{{ aurl('insurance_companies/status/0/' . $company->id) }}"
+                                                    class="btn btn-pill btn-outline-info btn-air-info"><i
+                                                        class="fas fa-times"></i>
+                                                    {{ trans('admin.Stop') }}</a>
+                                            @else
+                                                <a href="{{ aurl('insurance_companies/status/1/' . $company->id) }}"
+                                                    class="btn btn-pill btn-outline-success btn-air-success"><i
+                                                        class="fas fa-check"></i>
+                                                    {{ trans('admin.Start') }}</a>
+                                            @endif
 
-                                            <a href="{{ aurl('customers/edit/' . $customer->id) }}"
+                                            <a href="{{ aurl('insurance_companies/edit/' . $company->id) }}"
                                                 class="btn btn-pill btn-outline-warning btn-air-warning"><i
                                                     class="fas fa-edit"></i>
                                                 {{ trans('admin.Edit') }}</a>
 
-                                            <button data-id="{{ $customer->id }}" data-name="{{ $customer->name }}"
+                                            <button data-id="{{ $company->id }}" data-name="{{ $company->name }}"
                                                 id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
                                                     class="fas fa-trash"></i>
                                                 {{ trans('admin.Delete') }}</button>
@@ -58,7 +58,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $customers->links('admin.pagination.index') }}
+                        {{ $insurance_companies->links('admin.pagination.index') }}
                     </div>
                 </div>
             </div>
@@ -73,13 +73,13 @@
                     <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Delete') }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ aurl('customers/delete') }}" method="POST">
+                <form action="{{ aurl('insurance_companies/delete') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="col-md-12 text-center">
-                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="customerName"></p>
+                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="companyName"></p>
                         </div>
-                        <input type="hidden" id="customer_id" name="customer_id" value="">
+                        <input type="hidden" id="company_id" name="company_id" value="">
                     </div>
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
@@ -96,10 +96,10 @@
         <script>
             $(document).ready(function() {
                 $("#delete ").click(function() {
-                    var customerName = $(this).attr('data-name');
-                    var customerId = $(this).attr('data-id');
-                    $("#customerName").text(customerName);
-                    $("#customer_id").val(customerId);
+                    var companyName = $(this).attr('data-name');
+                    var companyId = $(this).attr('data-id');
+                    $("#companyName").text(companyName);
+                    $("#company_id").val(companyId);
                     $("#deleteModal").modal('show');
                 });
 

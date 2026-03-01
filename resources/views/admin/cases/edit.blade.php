@@ -27,7 +27,8 @@
                             <option selected disabled>{{ trans('admin.Select Specialization') }}</option>
                             @foreach ($specializations as $specialization)
                                 <option {{ $case->specialization_id == $specialization->id ? 'selected' : '' }}
-                                    value="{{ $specialization->id }}" data-price="{{ $specialization->price }}">{{ $specialization->name }}</option>
+                                    value="{{ $specialization->id }}" data-price="{{ $specialization->price }}">
+                                    {{ $specialization->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -46,12 +47,32 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="floating-label" for="amount">{{ trans('admin.Amount') }} <span
+                        <label for="company" class="form-label">{{ trans('admin.Insurance Companies') }}<span
                                 class="redStar">*</span></label>
-                        <input type="text" name="amount" value="{{ $case->amount }}" class="form-control"
+                        <select id="company" name="company" class="select2 form-select form-select-lg"
+                            data-allow-clear="true">
+                            <option value="0">{{ trans('admin.Does not belong') }}</option>
+                            @foreach ($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="floating-label" for="amount">{{ trans('admin.Customer Amount') }} <span
+                                class="redStar">*</span></label>
+                        <input type="text" name="amount" value="{{ old('amount') }}" class="form-control"
                             id="amount">
                     </div>
 
+                    <div id="company_percent_area" style="display: none">
+                        <div class="mb-3">
+                            <label class="floating-label" for="company_amount">{{ trans('admin.Company Amount') }} <span
+                                    class="redStar">*</span></label>
+                            <input type="text" name="company_amount" value="{{ old('company_amount') }}"
+                                class="form-control" id="company_amount">
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="floating-label" for="note">{{ trans('admin.Note') }}</label>
                         <textarea name="note" class="form-control" rows="4" id="note">{{ $case->note }}</textarea>
@@ -93,6 +114,15 @@
                         },
                     });
                 });
+
+                $("#company").change(function() {
+                    var percent = $(this).find(':selected').val();
+                    if (percent != 0) {
+                        $("#company_percent_area").show('slow')
+                    } else {
+                        $("#company_percent_area").hide('slow')
+                    }
+                })
             });
         </script>
     @endpush

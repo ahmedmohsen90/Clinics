@@ -17,7 +17,7 @@
                             <input type="text" value="{{ $setting->name_en }}" name="name_en" class="form-control"
                                 id="name_en">
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="floating-label" for="address_ar">{{ trans('admin.Address Ar') }}</label>
                             <input type="text" value="{{ $setting->address_ar }}" name="address_ar" class="form-control"
                                 id="address_ar">
@@ -71,7 +71,7 @@
                             <label class="floating-label" for="playstore">{{ trans('admin.Play Store') }}</label>
                             <input type="text" value="{{ $setting->playstore }}" name="playstore"
                                 class="form-control" id="playstore">
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-pill btn-outline-primary btn-air-primary"><i
@@ -91,8 +91,7 @@
                                 id="selectCover"><i class="fas fa-image"></i>
                                 {{ trans('admin.Upload Logo') }}</button>
                             <div class="coverImgPreview">
-                                <img src="{{ $setting->logo }}" style="max-height: 100%" id="targetImage"
-                                    alt="">
+                                <img src="{{ $setting->logo }}" style="max-height: 100%" id="targetImage" alt="">
                             </div>
                         </div>
                     </div>

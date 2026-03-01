@@ -43,10 +43,38 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="floating-label" for="amount">{{ trans('admin.Amount') }} <span
+                        <div class="form-check form-switch form-check-reverse mb-0">
+                            <input class="form-check-input" type="checkbox" id="is_package" />
+                            <label class="form-check-label" for="is_package">{{ trans('admin.Package') }}</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="company" class="form-label">{{ trans('admin.Insurance Companies') }}<span
+                                class="redStar">*</span></label>
+                        <select id="company" name="company" class="select2 form-select form-select-lg"
+                            data-allow-clear="true">
+                            <option value="0">{{ trans('admin.Does not belong') }}</option>
+                            @foreach ($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="floating-label" for="amount">{{ trans('admin.Customer Amount') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="amount" value="{{ old('amount') }}" class="form-control"
                             id="amount">
+                    </div>
+
+                    <div id="company_percent_area" style="display: none">
+                        <div class="mb-3">
+                            <label class="floating-label" for="company_amount">{{ trans('admin.Company Amount') }} <span
+                                    class="redStar">*</span></label>
+                            <input type="text" name="company_amount" value="{{ old('company_amount') }}"
+                                class="form-control" id="company_amount">
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -90,6 +118,15 @@
                         },
                     });
                 });
+
+                $("#company").change(function() {
+                    var percent = $(this).find(':selected').val();
+                    if (percent != 0) {
+                        $("#company_percent_area").show('slow')
+                    } else {
+                        $("#company_percent_area").hide('slow')
+                    }
+                })
             });
         </script>
     @endpush

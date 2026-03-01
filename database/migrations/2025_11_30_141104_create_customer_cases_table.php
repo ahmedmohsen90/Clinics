@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('specialization_id')->index();
             $table->foreignId('doctor_id')->index();
             $table->foreignId('customer_id')->index();
+            $table->boolean("is_package")->default(0);
             $table->double("amount", 8, 3)->default(0);
+            $table->double("total", 8, 3)->default(0);
             $table->text("note")->nullable();
             $table->timestamps();
             $table->foreign('specialization_id')->references('id')->on('specializations')->onUpdate('cascade')->onDelete('cascade');

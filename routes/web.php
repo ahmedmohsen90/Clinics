@@ -6,12 +6,15 @@ use App\Http\Controllers\Admin\CustomerCaseController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataEntryController;
+use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SpecializationController;
+use App\Http\Controllers\Admin\InsuranceCompanyController;
+use App\Http\Controllers\Admin\WalletController;
 use App\Http\Middleware\Lang;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +101,16 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('delete', [ReservationController::class, 'destroy']);
         });
 
+        Route::group(['prefix' => 'insurance_companies'], function () {
+            Route::get('', [InsuranceCompanyController::class, 'index']);
+            Route::get('create', [InsuranceCompanyController::class, 'create']);
+            Route::get('edit/{id}', [InsuranceCompanyController::class, 'edit']);
+            Route::get('status/{status}/{id}', [InsuranceCompanyController::class, 'status']);
+            Route::post('create', [InsuranceCompanyController::class, 'store']);
+            Route::post('update/{id}', [InsuranceCompanyController::class, 'update']);
+            Route::post('delete', [InsuranceCompanyController::class, 'destroy']);
+        });
+
         Route::group(['prefix' => 'expenses'], function () {
             Route::get('', [ExpenseController::class, 'index']);
             Route::get('create', [ExpenseController::class, 'create']);
@@ -105,6 +118,25 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('create', [ExpenseController::class, 'store']);
             Route::post('update/{id}', [ExpenseController::class, 'update']);
             Route::post('delete', [ExpenseController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'packages'], function () {
+            Route::get('', [WalletController::class, 'index']);
+            Route::get('create', [WalletController::class, 'create']);
+            Route::get('edit/{id}', [WalletController::class, 'edit']);
+            Route::post('create', [WalletController::class, 'store']);
+            Route::post('update/{id}', [WalletController::class, 'update']);
+            Route::post('delete', [WalletController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'debts'], function () {
+            Route::get('', [DebtController::class, 'index']);
+            Route::get('create', [DebtController::class, 'create']);
+            Route::get('edit/{id}', [DebtController::class, 'edit']);
+            Route::get('collection/{id}', [DebtController::class, 'collection']);
+            Route::post('create', [DebtController::class, 'store']);
+            Route::post('update/{id}', [DebtController::class, 'update']);
+            Route::post('delete', [DebtController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'cases'], function () {

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\InsuranceCompany;
+use App\Models\InsuranceCustomer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -13,7 +15,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::paginate(50);
+        $customers = Customer::with('company.company')->paginate(50);
         return view('admin.customers.index', [
             'title' => trans('admin.All Customers'),
             'customers' => $customers
@@ -25,8 +27,10 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        $companies = InsuranceCompany::where('status', 1)->get();
         return view('admin.customers.create', [
             'title' => trans('admin.Add New Customer'),
+            'companies' => $companies
         ]);
     }
 
@@ -53,6 +57,13 @@ class CustomerController extends Controller
         $customer->job = $request->job;
         $customer->age = $request->age;
         $customer->save();
+
+        if ($request->company != 0) {
+            InsuranceCustomer::create([
+                'customer_id' => $customer->id,
+                'insurance_company_id' => $request->company,
+            ]);
+        }
 
         userLogs([
             'model' => '\App\Models\Customer',

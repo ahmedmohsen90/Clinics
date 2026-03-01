@@ -37,6 +37,18 @@
                             id="age">
                     </div>
 
+                    <div class="mb-3">
+                        <label for="company" class="form-label">{{ trans('admin.Insurance Companies') }}<span
+                                class="redStar">*</span></label>
+                        <select id="company" name="company" class="select2 form-select form-select-lg"
+                            data-allow-clear="true">
+                            <option value="0">{{ trans('admin.Does not belong') }}</option>
+                            @foreach ($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-pill btn-outline-primary btn-air-primary"><i

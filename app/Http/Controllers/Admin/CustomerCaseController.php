@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CaseInsurance;
 use App\Models\Customer;
 use App\Models\CustomerCase;
 use App\Models\CustomerCaseStatus;
+use App\Models\Debt;
 use App\Models\Doctor;
+use App\Models\InsuranceCompany;
 use App\Models\Report;
 use App\Models\Specialization;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CustomerCaseController extends Controller
@@ -30,12 +34,15 @@ class CustomerCaseController extends Controller
      */
     public function create()
     {
+        $companies = InsuranceCompany::where('status', 1)->get();
         $specializations = Specialization::get();
         $customers = Customer::get();
+
         return view('admin.cases.create', [
             'title' => trans('admin.Add New Case'),
             'specializations' => $specializations,
             'customers' => $customers,
+            'companies' => $companies,
         ]);
     }
 
@@ -86,11 +93,18 @@ class CustomerCaseController extends Controller
             'amount'          => trans('admin.Amount'),
         ]);
 
+        if ($request->company) {
+            $total = $request->amount + $request->company_amount;
+        } else {
+            $total = $request->amount;
+        }
+
         $case = new CustomerCase();
         $case->customer_id = $request->customer;
         $case->specialization_id = $request->specialization;
         $case->doctor_id = $request->doctor;
         $case->amount = $request->amount;
+        $case->total = $total;
         $case->note = $request->note;
         $case->save();
 
@@ -98,6 +112,31 @@ class CustomerCaseController extends Controller
             'customer_case_id' => $case->id,
             'status' => 'pending',
         ]);
+
+        if ($request->company) {
+
+            CaseInsurance::create([
+                'insurance_company_id' => $request->company,
+                'customer_case_id' => $case->id,
+                'percent' => ($request->company_amount / $total) * 100,
+                'amount' => $request->company_amount,
+                'is_paid' => 0,
+            ]);
+
+            $compamy = InsuranceCompany::find($request->company);
+            $debt = Debt::create([
+                'name' => $compamy->name,
+                'amount' => $request->company_amount,
+                'note' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
+            ]);
+
+            Report::create([
+                'reportable_type' => "App\Models\Debt",
+                'reportable_id' => $debt->id,
+                'amount' => $request->company_amount,
+                'operation' => 'minus',
+            ]);
+        }
 
         userLogs([
             'model' => '\App\Models\CustomerCase',
@@ -117,6 +156,7 @@ class CustomerCaseController extends Controller
         $specializations = Specialization::get();
         $customers = Customer::get();
         $case = CustomerCase::find($id);
+        $companies = InsuranceCompany::where('status', 1)->get();
 
         $doctors = Doctor::whereHas('specializations', function ($query) use ($case) {
             $query->where('specialization_id', $case->specialization_id);
@@ -128,6 +168,7 @@ class CustomerCaseController extends Controller
             'customers' => $customers,
             'case' => $case,
             'doctors' => $doctors,
+            'companies' => $companies
         ]);
     }
 
@@ -193,7 +234,7 @@ class CustomerCaseController extends Controller
             Report::create([
                 'reportable_type' => "App\Models\CustomerCase",
                 'reportable_id' => $id,
-                'amount' => $case->amount,
+                'amount' => $case->total,
             ]);
         }
 

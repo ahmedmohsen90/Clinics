@@ -29,6 +29,25 @@
             <span class="menu-header-text">{{ trans('admin.Reports') }}</span>
         </li>
 
+        <li class="menu-item {{ openMenu('reservations') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Reservations') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('reservations') }}">
+                    <a href="{{ aurl('reservations') }}" class="menu-link">
+                        <div>{{ trans('admin.All Reservations') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('reservations/create') }}">
+                    <a href="{{ aurl('reservations/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Reservation') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li class="menu-item {{ openMenu('cases') }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fas fa-user-injured"></i>&nbsp;&nbsp;
@@ -139,6 +158,25 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ openMenu('insurance_companies') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-building"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Insurance Companies') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('insurance_companies') }}">
+                    <a href="{{ aurl('insurance_companies') }}" class="menu-link">
+                        <div>{{ trans('admin.All Companies') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('insurance_companies/create') }}">
+                    <a href="{{ aurl('insurance_companies/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Company') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li class="menu-item {{ openMenu('doctors') }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fas fa-user-md"></i>&nbsp;&nbsp;
@@ -153,6 +191,25 @@
                 <li class="menu-item {{ activeMenu('doctors/create') }}">
                     <a href="{{ aurl('doctors/create') }}" class="menu-link">
                         <div>{{ trans('admin.Add New Doctor') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item {{ openMenu('packages') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-box"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Packages') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('packages') }}">
+                    <a href="{{ aurl('packages') }}" class="menu-link">
+                        <div>{{ trans('admin.All Packages') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('packages/create') }}">
+                    <a href="{{ aurl('packages/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Package') }}</div>
                     </a>
                 </li>
             </ul>
@@ -177,25 +234,6 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ openMenu('reservations') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Reservations') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('reservations') }}">
-                    <a href="{{ aurl('reservations') }}" class="menu-link">
-                        <div>{{ trans('admin.All Reservations') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('reservations/create') }}">
-                    <a href="{{ aurl('reservations/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Reservation') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
         <li class="menu-item {{ openMenu('expenses') }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fas fa-money-bill-alt"></i>&nbsp;&nbsp;
@@ -210,6 +248,25 @@
                 <li class="menu-item {{ activeMenu('expenses/create') }}">
                     <a href="{{ aurl('expenses/create') }}" class="menu-link">
                         <div>{{ trans('admin.Add New Expense') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item {{ openMenu('debts') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-coins"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Debts') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('debts') }}">
+                    <a href="{{ aurl('debts') }}" class="menu-link">
+                        <div>{{ trans('admin.All Debts') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('debts/create') }}">
+                    <a href="{{ aurl('debts/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Debt') }}</div>
                     </a>
                 </li>
             </ul>
