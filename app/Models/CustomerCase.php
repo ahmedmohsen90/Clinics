@@ -37,4 +37,9 @@ class CustomerCase extends Model
     {
         return $this->hasMany(CustomerCaseStatus::class, 'customer_case_id');
     }
+
+    public function company()
+    {
+        return $this->hasOne(CaseInsurance::class, 'customer_case_id');
+    }
 }

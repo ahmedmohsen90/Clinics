@@ -89,7 +89,7 @@ $(function () {
   // Bootstrap Daterange Picker
   // --------------------------------------------------------------------
   var bsRangePickerBasic = $('#bs-rangepicker-basic'),
-    bsRangePickerSingle = $('#bs-rangepicker-single'),
+    bsRangePickerSingle = $('#bs-rangepicker-single '),
     bsRangePickerTime = $('#bs-rangepicker-time'),
     bsRangePickerRange = $('#bs-rangepicker-range'),
     bsRangePickerWeekNum = $('#bs-rangepicker-week-num'),

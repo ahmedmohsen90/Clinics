@@ -122,20 +122,6 @@ class CustomerCaseController extends Controller
                 'amount' => $request->company_amount,
                 'is_paid' => 0,
             ]);
-
-            $compamy = InsuranceCompany::find($request->company);
-            $debt = Debt::create([
-                'name' => $compamy->name,
-                'amount' => $request->company_amount,
-                'note' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
-            ]);
-
-            Report::create([
-                'reportable_type' => "App\Models\Debt",
-                'reportable_id' => $debt->id,
-                'amount' => $request->company_amount,
-                'operation' => 'minus',
-            ]);
         }
 
         userLogs([
@@ -228,7 +214,7 @@ class CustomerCaseController extends Controller
 
     public function status(string $status, int $id)
     {
-        $case = CustomerCase::find($id);
+        $case = CustomerCase::where('id', $id)->with('company')->first();
 
         if ($status == "start") {
             Report::create([
@@ -236,6 +222,25 @@ class CustomerCaseController extends Controller
                 'reportable_id' => $id,
                 'amount' => $case->total,
             ]);
+
+
+            if (isset($case->company)) {
+                $company = InsuranceCompany::find($case->company->insurance_company_id);
+                $caseInsureance = CaseInsurance::find($case->id);
+
+                $debt = Debt::create([
+                    'name' => $company->name,
+                    'amount' => $caseInsureance->amount,
+                    'note' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
+                ]);
+
+                Report::create([
+                    'reportable_type' => "App\Models\Debt",
+                    'reportable_id' => $debt->id,
+                    'amount' => $caseInsureance->amount,
+                    'operation' => 'minus',
+                ]);
+            }
         }
 
         CustomerCaseStatus::create([

@@ -151,6 +151,7 @@ Route::middleware([Lang::class])->group(function () {
         });
 
         Route::group(['prefix' => 'reports'], function () {
+            Route::get('filter', [ReportController::class, 'filter']);
             Route::get('{filter}', [ReportController::class, 'index']);
             Route::get('view/{id}', [ReportController::class, 'show']);
         });

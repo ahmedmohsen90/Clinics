@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CustomerCase;
+use App\Models\Debt;
+use App\Models\Expenses;
 use App\Models\Report;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -23,7 +26,9 @@ class ReportController extends Controller
         $reports = Report::with([
             'reportable' => function ($morph) {
                 $morph->morphWith([
-                    CustomerCase::class => ['customer','specialization'],
+                    CustomerCase::class => ['customer', 'specialization'],
+                    Debt::class         => [],
+                    Expenses::class      => [],
                 ]);
             }
         ])
@@ -51,5 +56,26 @@ class ReportController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function filter(Request $request)
+    {
+        $reports = Report::with([
+            'reportable' => function ($morph) {
+                $morph->morphWith([
+                    CustomerCase::class => ['customer', 'specialization'],
+                    Debt::class         => [],
+                    Expenses::class      => [],
+                ]);
+            }
+        ])
+            ->whereBetween('created_at', [Carbon::parse($request->from), Carbon::parse($request->to)])
+            ->latest()
+            ->paginate(50);
+
+        return view('admin.reports.index', [
+            'title' => trans('admin.Reports') . ' ' . trans("admin.From") . ' ' . $request->from . ' ' . trans('admin.To') . ' ' . $request->to,
+            'reports' => $reports
+        ]);
     }
 }

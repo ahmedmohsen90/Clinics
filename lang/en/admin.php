@@ -1168,7 +1168,7 @@ return [
     'All Debts' => 'All Debts',
     'Add New Debt' => 'Add New Debt',
     'Collection' => 'Collection',
-    '' => '',
+    'Filter' => 'Filter',
     '' => '',
     '' => '',
     '' => '',

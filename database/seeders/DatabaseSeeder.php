@@ -55,7 +55,8 @@ class DatabaseSeeder extends Seeder
         $dentry->addRole($dentryRole);
 
         Setting::create([
-            'name' => "Physical Therapy"
+            'name_ar' => "العيادة",
+            'name_en' => "Clinics"
         ]);
     }
 }
