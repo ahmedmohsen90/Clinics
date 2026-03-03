@@ -18,10 +18,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Roles
+        $superAdminRole = Role::create([
+            'name' => 'super_admin',
+            'display_name' => 'Super Admin',
+            'description' => 'Super Admin'
+        ]);
+
         $adminRole = Role::create([
             'name' => 'admin',
             'display_name' => 'Admin',
-            'description' => 'Super Admin'
+            'description' => 'Admin'
         ]);
 
         $dentryRole = Role::create([
@@ -30,20 +37,26 @@ class DatabaseSeeder extends Seeder
             'description' => 'Data Entry Can Add Data Only'
         ]);
 
-        $admin = User::create([
+        // Admins
+        $superAdmin = User::create([
             'name' => 'Ahmed Mohsen',
             'mobile' => '01005785948',
             'password' => Hash::make("secret"),
         ]);
+        $superAdmin->addRole($superAdminRole);
 
-        $admin->addRole($adminRole);
-
-        $admin = User::create([
+        $superAdmin = User::create([
             'name' => 'Mohamed Mahmoud',
             'mobile' => '01227523010',
             'password' => Hash::make("oza123456"),
         ]);
+        $superAdmin->addRole($superAdminRole);
 
+        $admin = User::create([
+            'name' => 'Admin',
+            'mobile' => '01234567891',
+            'password' => Hash::make("123456"),
+        ]);
         $admin->addRole($adminRole);
 
         $dentry = User::create([
@@ -51,7 +64,6 @@ class DatabaseSeeder extends Seeder
             'mobile' => '01234567890',
             'password' => Hash::make("123456"),
         ]);
-
         $dentry->addRole($dentryRole);
 
         Setting::create([

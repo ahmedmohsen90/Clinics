@@ -187,12 +187,33 @@
                         </ul>
                     </div>
 
-                    <!-- Search Small Screens -->
-                    <div class="navbar-search-wrapper search-input-wrapper d-none">
-                        <input type="text" class="form-control search-input container-xxl border-0"
-                            placeholder="Search..." aria-label="Search..." />
-                        <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
-                    </div>
+                    <form action="{{ aurl('search') }}" method="GET">
+                        @csrf
+                        <!-- Search Small Screens -->
+                        <div class="navbar-search-wrapper search-input-wrapper d-none">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control search-input container-xxl border-0"
+                                            placeholder="Search...sss" aria-label="Search..." />
+                                        <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="type" id="type">
+                                            <option value="doctor">doctor</option>
+                                            <option value="customer">customer</option>
+                                            <option value="case">case</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-success">{{ trans('admin.Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
                 </nav>
 
                 <!-- / Navbar -->
