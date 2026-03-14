@@ -49,6 +49,26 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="floating-label" for="insurance_number">{{ trans('admin.Insurance Number') }} <span
+                                class="redStar">*</span></label>
+                        <input type="number" name="insurance_number" value="{{ old('insurance_number') }}" class="form-control"
+                            id="insurance_number">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="floating-label" for="percentage">{{ trans('admin.Company Percent') }} <span
+                                class="redStar">*</span></label>
+                        <input type="number" name="percentage" value="{{ old('percentage') }}" class="form-control"
+                            id="percentage">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="floating-label" for="national_id">{{ trans('admin.National Id') }} <span
+                                class="redStar">*</span></label>
+                        <input type="number" name="national_id" value="{{ old('national_id') }}" class="form-control"
+                            id="national_id">
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-pill btn-outline-primary btn-air-primary"><i

@@ -6,6 +6,18 @@
             <form action="{{ aurl('data_entries/create') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-body">
+
+                    <div class="mb-3">
+                        <label for="branch_id" class="form-label">{{ trans('admin.Branches') }}</label>
+                        <div class="select2-primary">
+                            <select id="branch_id" name="branch_id" class="select2 form-select">
+                                @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
                                 class="redStar">*</span></label>

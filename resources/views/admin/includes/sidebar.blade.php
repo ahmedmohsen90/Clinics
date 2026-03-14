@@ -120,6 +120,25 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ openMenu('branches') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-code-branch"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Branches') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('branches') }}">
+                    <a href="{{ aurl('branches') }}" class="menu-link">
+                        <div>{{ trans('admin.All Branches') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('branches/create') }}">
+                    <a href="{{ aurl('branches/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Branch') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li class="menu-item {{ openMenu('data_entries') }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="fas fa-user-edit"></i>&nbsp;&nbsp;

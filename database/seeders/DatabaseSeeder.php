@@ -59,13 +59,6 @@ class DatabaseSeeder extends Seeder
         ]);
         $admin->addRole($adminRole);
 
-        $dentry = User::create([
-            'name' => 'Secretary',
-            'mobile' => '01234567890',
-            'password' => Hash::make("123456"),
-        ]);
-        $dentry->addRole($dentryRole);
-
         Setting::create([
             'name_ar' => "العيادة",
             'name_en' => "Clinics"

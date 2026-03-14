@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CustomerCaseController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -71,6 +72,15 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('create', [SpecializationController::class, 'store']);
             Route::post('update/{id}', [SpecializationController::class, 'update']);
             Route::post('delete', [SpecializationController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'branches'], function () {
+            Route::get('', [BranchController::class, 'index']);
+            Route::get('create', [BranchController::class, 'create']);
+            Route::get('edit/{id}', [BranchController::class, 'edit']);
+            Route::post('create', [BranchController::class, 'store']);
+            Route::post('update/{id}', [BranchController::class, 'update']);
+            Route::post('delete', [BranchController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'doctors'], function () {

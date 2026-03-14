@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\User;
+use App\Models\UserBranch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,8 +27,11 @@ class DataEntryController extends Controller
      */
     public function create()
     {
+        $branches = Branch::get();
+
         return view('admin.data_entries.create', [
             'title' => trans('admin.Add New Data Entry'),
+            'branches'=>$branches
         ]);
     }
 
@@ -51,6 +56,11 @@ class DataEntryController extends Controller
         $dentry->password = Hash::make($request->password);
         $dentry->save();
         $dentry->addRole('dentry');
+
+        UserBranch::create([
+            'user_id' => $dentry->id,
+            'branch_id' => $request->branch_id,
+        ]);
 
         userLogs([
             'model' => '\App\Models\User',
