@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
+            $table->morphs('debtable');
             $table->string('name', 50);
             $table->double('amount', 8, 2);
             $table->text('note');
-            $table->boolean('is_collection')->default(0);
+            $table->enum('operation',['plus','minus'])->default('minus');
             $table->timestamps();
         });
     }

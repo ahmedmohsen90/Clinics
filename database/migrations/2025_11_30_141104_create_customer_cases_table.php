@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('customer_cases', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->index();
             $table->foreignId('specialization_id')->index();
             $table->foreignId('doctor_id')->index();
             $table->foreignId('customer_id')->index();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->foreign('specialization_id')->references('id')->on('specializations')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('doctor_id')->references('id')->on('doctors')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
@@ -18,6 +19,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $company = Company::create([
+            'name' => 'MediCare Clinics'
+        ]);
+
         // Roles
         $superAdminRole = Role::create([
             'name' => 'super_admin',
@@ -39,6 +44,7 @@ class DatabaseSeeder extends Seeder
 
         // Admins
         $superAdmin = User::create([
+            'company_id' => $company->id,
             'name' => 'Ahmed Mohsen',
             'mobile' => '01005785948',
             'password' => Hash::make("secret"),
@@ -46,6 +52,7 @@ class DatabaseSeeder extends Seeder
         $superAdmin->addRole($superAdminRole);
 
         $superAdmin = User::create([
+            'company_id' => $company->id,
             'name' => 'Mohamed Mahmoud',
             'mobile' => '01227523010',
             'password' => Hash::make("oza123456"),
@@ -53,6 +60,7 @@ class DatabaseSeeder extends Seeder
         $superAdmin->addRole($superAdminRole);
 
         $admin = User::create([
+            'company_id' => $company->id,
             'name' => 'Admin',
             'mobile' => '01234567891',
             'password' => Hash::make("123456"),
@@ -60,8 +68,9 @@ class DatabaseSeeder extends Seeder
         $admin->addRole($adminRole);
 
         Setting::create([
-            'name_ar' => "العيادة",
-            'name_en' => "Clinics"
+            'company_id' => $company->id,
+            'name_ar' => "عناية",
+            'name_en' => "MediCare Clinics"
         ]);
     }
 }

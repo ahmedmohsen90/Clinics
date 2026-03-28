@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name',50);
-            $table->string('mobile',11)->unique();
+            $table->foreignId('company_id')->index();
+            $table->string('name', 50);
+            $table->string('mobile', 11)->unique();
             $table->string('password');
             $table->timestamps();
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('sessions', function (Blueprint $table) {

@@ -93,6 +93,7 @@ class AdminController extends Controller
         ]);
 
         $user = new User();
+        $user->company_id = session('company_id');
         $user->name = $request->name;
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);

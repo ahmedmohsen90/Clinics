@@ -52,6 +52,7 @@ class CustomerController extends Controller
         ]);
 
         $customer = new Customer();
+        $customer->company_id = session('company_id');
         $customer->name = $request->name;
         $customer->mobile = $request->mobile;
         $customer->job = $request->job;

@@ -44,6 +44,7 @@ class ExpenseController extends Controller
         ]);
 
         $expense = new Expenses();
+        $expense->company_id = session('company_id');
         $expense->amount = $request->amount;
         $expense->description = $request->description;
         $expense->save();

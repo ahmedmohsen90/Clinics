@@ -41,6 +41,7 @@ class InsuranceCompanyController extends Controller
         ]);
 
         $company = new InsuranceCompany();
+        $company->company_id = session('company_id');
         $company->name = $request->name;
         $company->save();
 

@@ -51,6 +51,7 @@ class DataEntryController extends Controller
         ]);
 
         $dentry = new User();
+        $dentry->company_id = session('company_id');
         $dentry->name = $request->name;
         $dentry->mobile = $request->mobile;
         $dentry->password = Hash::make($request->password);

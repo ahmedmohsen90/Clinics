@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('specializations', function (Blueprint $table) {
             $table->id();
-            $table->string("name",50);
-            $table->double("price",8,2)->default(0);
+            $table->foreignId('company_id')->index();
+            $table->string("name", 50);
+            $table->double("price", 8, 2)->default(0);
             $table->timestamps();
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -46,6 +46,7 @@ class DebtController extends Controller
         ]);
 
         $debt = Debt::create([
+            'company_id' => session('company_id'),
             'name' => $request->name,
             'amount' => $request->amount,
             'note' => $request->note,

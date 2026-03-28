@@ -35,6 +35,7 @@ if (!function_exists('userLogs')) {
     function userLogs($data)
     {
         $log = new AdminLog();
+        $log->company_id = Auth::user()->company_id;
         $log->user_id = Auth::user()->id;
         $log->model = $data["model"];
         $log->model_id = $data['model_id'];

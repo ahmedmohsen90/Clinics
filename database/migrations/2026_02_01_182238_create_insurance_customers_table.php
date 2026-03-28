@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->index();
             $table->foreignId('insurance_company_id')->index();
+            $table->integer("insurance_number");
+            $table->integer("company_percentage");
+            $table->integer("national_id")->nullable();
             $table->timestamps();
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onUpdate('cascade')->onDelete('cascade');

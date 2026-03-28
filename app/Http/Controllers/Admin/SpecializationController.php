@@ -43,6 +43,7 @@ class SpecializationController extends Controller
         ]);
 
         $specialization = new Specialization();
+        $specialization->company_id = session('company_id');
         $specialization->name = $request->name;
         $specialization->price = $request->price;
         $specialization->save();

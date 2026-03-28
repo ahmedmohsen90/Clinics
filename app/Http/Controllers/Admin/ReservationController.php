@@ -61,6 +61,7 @@ class ReservationController extends Controller
             ->format('H:i:s');
 
         $reservation = new Reservation();
+        $reservation->company_id = session('company_id');
         $reservation->customer_id = $request->customer;
         $reservation->specialization_id = $request->specialization;
         $reservation->doctor_id = $request->doctor;

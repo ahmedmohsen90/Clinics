@@ -53,6 +53,7 @@ class WalletController extends Controller
         ]);
 
         $wallet = new Wallet();
+        $wallet->company_id = session('company_id');
         $wallet->customer_id = $request->customer;
         $wallet->cases_number = $request->cases_number;
         $wallet->price = $request->price;

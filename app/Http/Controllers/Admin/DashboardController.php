@@ -23,7 +23,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
         $reportToday = $this->reportTotal(today(), today()->endOfDay());
         $reportWeek  = $this->reportTotal(now()->startOfWeek(), now()->endOfWeek());
         $reportMonth = $this->reportTotal(now()->startOfMonth(), now()->endOfMonth());

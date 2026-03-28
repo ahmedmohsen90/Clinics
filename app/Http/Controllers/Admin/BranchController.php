@@ -41,6 +41,7 @@ class BranchController extends Controller
         ]);
 
         $branch = new Branch();
+        $branch->company_id = session('company_id');
         $branch->name = $request->name;
         $branch->save();
 

@@ -100,6 +100,7 @@ class CustomerCaseController extends Controller
         }
 
         $case = new CustomerCase();
+        $case->company_id = session('company_id');
         $case->customer_id = $request->customer;
         $case->specialization_id = $request->specialization;
         $case->doctor_id = $request->doctor;

@@ -33,6 +33,9 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($data, $remember)) {
+            session([
+                'company_id' => Auth::user()->company_id
+            ]);
             userLogs([
                 'model' => '\App\Models\User',
                 'model_id' => Auth::user()->id,

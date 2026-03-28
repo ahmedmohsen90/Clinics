@@ -66,6 +66,7 @@ class DoctorController extends Controller
         ]);
 
         $doctor = new Doctor();
+        $doctor->company_id = session('company_id');
         $doctor->name = $request->name;
         $doctor->mobile = $request->mobile;
         $doctor->save();
