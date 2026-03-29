@@ -16,4 +16,9 @@ class Debt extends Model
     {
         static::addGlobalScope(new CompanyScope);
     }
+
+    public function debtable()
+    {
+        return $this->morphTo();
+    }
 }

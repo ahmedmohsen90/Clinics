@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DataEntryController;
 use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SettingController;
@@ -115,6 +116,7 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('', [InsuranceCompanyController::class, 'index']);
             Route::get('create', [InsuranceCompanyController::class, 'create']);
             Route::get('edit/{id}', [InsuranceCompanyController::class, 'edit']);
+            Route::get('financials/{id}', [InsuranceCompanyController::class, 'financials']);
             Route::get('status/{status}/{id}', [InsuranceCompanyController::class, 'status']);
             Route::post('create', [InsuranceCompanyController::class, 'store']);
             Route::post('update/{id}', [InsuranceCompanyController::class, 'update']);
@@ -164,6 +166,11 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('filter', [ReportController::class, 'filter']);
             Route::get('{filter}', [ReportController::class, 'index']);
             Route::get('view/{id}', [ReportController::class, 'show']);
+        });
+
+        Route::group(['prefix' => 'exports'], function () {
+            Route::get('debts', [ExportController::class, 'debts']);
+            Route::get('pdf/debts', [ExportController::class, 'debts']);
         });
 
     });

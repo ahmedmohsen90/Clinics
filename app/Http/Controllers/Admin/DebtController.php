@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Debt;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DebtController extends Controller
 {
@@ -14,9 +15,25 @@ class DebtController extends Controller
      */
     public function index()
     {
+        $debts = Debt::where([
+            'debtable_type' => "App\Models\InsuranceCompany",
+        ])->with('debtable')->latest()->paginate(50);
+
+        $entitlements = DB::table('debts')->where([
+            'operation' => 'entitlements',
+            'debtable_type' => "App\Models\InsuranceCompany",
+        ])->sum('amount');
+
+        $collected = DB::table('debts')->where([
+            'operation' => 'collected',
+            'debtable_type' => "App\Models\InsuranceCompany",
+        ])->sum('amount');
+
         return view('admin.debts.index', [
             'title' => trans('admin.All Debts'),
-            'debts' => Debt::latest()->paginate(50)
+            'debts' => $debts,
+            'entitlements' => $entitlements,
+            'collected' => $collected,
         ]);
     }
 
@@ -36,29 +53,30 @@ class DebtController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'          => 'required',
             'amount'        => 'required',
-            'note'        => 'nullable',
+            'description'        => 'nullable',
         ], [], [
-            'name'          => trans('admin.Name'),
             'amount'        => trans('admin.Amount'),
-            'note'        => trans('admin.Note'),
+            'description'        => trans('admin.Description'),
         ]);
 
-        $debt = Debt::create([
-            'company_id' => session('company_id'),
-            'name' => $request->name,
-            'amount' => $request->amount,
-            'note' => $request->note,
-        ]);
+        $debt = new Debt();
+        $debt->company_id = session('company_id');
+        $debt->debtable_type = $request->debtable_type;
+        $debt->debtable_id = $request->company_id;
+        $debt->amount = $request->amount;
+        $debt->description = $request->description;
+        $debt->operation = $request->operation;
+        $debt->save();
 
         Report::create([
+            'company_id' => session('company_id'),
             'reportable_type' => "App\Models\Debt",
             'reportable_id' => $debt->id,
             'amount' => $request->amount,
-            'operation' => 'minus',
+            'operation' => ($request->operation == "collected") ? 'plus' : 'minus',
         ]);
-        return redirect(aurl('debts'))->with('success', 'operation success');
+        return back()->with('success', 'operation success');
     }
 
     /**

@@ -4,3 +4,7 @@
     border-color: #17ae83 !important;
     background-color: #17ae83 !important;
 }
+.pull-right {
+    float: right;
+    margin: 0 2px;
+}

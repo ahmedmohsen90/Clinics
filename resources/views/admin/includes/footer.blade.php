@@ -54,7 +54,6 @@
 
 <!-- Main JS -->
 <script src="{{ asset('dashboard') }}/assets/js/main.js"></script>
-
 <script>
     $(document).ready(function() {
         $("#enLang").click(function(e) {

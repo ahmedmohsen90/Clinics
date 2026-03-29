@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Debt;
 use App\Models\InsuranceCompany;
 use Illuminate\Http\Request;
 
@@ -120,5 +121,35 @@ class InsuranceCompanyController extends Controller
             'status' => 'delete'
         ]);
         return back()->with('success', 'operation success');
+    }
+
+    public function financials(int $id)
+    {
+        $company = InsuranceCompany::find($id);
+
+        $debts = Debt::where([
+            'debtable_type' => "App\Models\InsuranceCompany",
+            'debtable_id' => $company->id,
+        ])->latest()->paginate(50);
+
+        $entitlements = Debt::where([
+            'operation' => 'entitlements',
+            'debtable_type' => "App\Models\InsuranceCompany",
+            'debtable_id' => $company->id,
+        ])->sum('amount');
+
+        $collected = Debt::where([
+            'operation' => 'collected',
+            'debtable_type' => "App\Models\InsuranceCompany",
+            'debtable_id' => $company->id,
+        ])->sum('amount');
+
+        return view('admin.insurance_companies.financials', [
+            'title' => trans('admin.Financials') . " - " . $company->name,
+            'debts' => $debts,
+            'company' => $company,
+            'entitlements' => $entitlements,
+            'collected' => $collected
+        ]);
     }
 }

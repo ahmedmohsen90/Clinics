@@ -32,27 +32,33 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($company->status == 1)
-                                                <a href="{{ aurl('insurance_companies/status/0/' . $company->id) }}"
-                                                    class="btn btn-pill btn-outline-info btn-air-info"><i
-                                                        class="fas fa-times"></i>
-                                                    {{ trans('admin.Stop') }}</a>
-                                            @else
-                                                <a href="{{ aurl('insurance_companies/status/1/' . $company->id) }}"
-                                                    class="btn btn-pill btn-outline-success btn-air-success"><i
-                                                        class="fas fa-check"></i>
-                                                    {{ trans('admin.Start') }}</a>
-                                            @endif
+
+                                            <a href="{{ aurl('insurance_companies/financials/' . $company->id) }}"
+                                                class="btn btn-pill btn-outline-primary btn-air-primary">
+                                                <i class="fas fa-money-check"></i>&nbsp;{{ trans('admin.Financials') }}
+                                            </a>
 
                                             <a href="{{ aurl('insurance_companies/edit/' . $company->id) }}"
                                                 class="btn btn-pill btn-outline-warning btn-air-warning"><i
                                                     class="fas fa-edit"></i>
                                                 {{ trans('admin.Edit') }}</a>
 
+                                            @if ($company->status == 1)
+                                                <a href="{{ aurl('insurance_companies/status/0/' . $company->id) }}"
+                                                    class="btn btn-pill btn-outline-info btn-air-info"><i
+                                                        class="fas fa-times"></i>
+                                                    &nbsp;{{ trans('admin.Stop') }}</a>
+                                            @else
+                                                <a href="{{ aurl('insurance_companies/status/1/' . $company->id) }}"
+                                                    class="btn btn-pill btn-outline-success btn-air-success"><i
+                                                        class="fas fa-check"></i>
+                                                    &nbsp;{{ trans('admin.Start') }}</a>
+                                            @endif
+
                                             <button data-id="{{ $company->id }}" data-name="{{ $company->name }}"
                                                 id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
                                                     class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
+                                                &nbsp;{{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach

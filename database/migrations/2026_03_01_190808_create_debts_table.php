@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->index();
             $table->morphs('debtable');
-            $table->string('name', 50);
             $table->double('amount', 8, 2);
-            $table->text('note');
-            $table->enum('operation',['plus','minus'])->default('minus');
+            $table->text('description');
+            $table->enum('operation', ['collected', 'entitlements'])->default('entitlements');
             $table->timestamps();
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

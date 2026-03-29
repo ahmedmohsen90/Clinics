@@ -73,7 +73,7 @@
                                                     class="fas fa-clinic-medical"></i>{{ $report->reportable->specialization->name }}
                                             @elseif ($report->reportable_type == 'App\Models\Debt')
                                                 <i class="fas fa-coins"></i> {{ trans('admin.Debts') }} -
-                                                {{ $report->reportable->note }}
+                                                {{ $report->reportable->description }}
                                             @elseif ($report->reportable_type == 'App\Models\Expenses')
                                                 <i class="fas fa-money-bill-alt"></i> {{ trans('admin.Expenses') }} -
                                                 {{ $report->reportable->description }}

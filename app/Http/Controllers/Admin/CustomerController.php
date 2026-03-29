@@ -63,6 +63,9 @@ class CustomerController extends Controller
             InsuranceCustomer::create([
                 'customer_id' => $customer->id,
                 'insurance_company_id' => $request->company,
+                'insurance_number' => $request->insurance_number,
+                'company_percentage' => $request->percentage,
+                'national_id' => $request->national_id,
             ]);
         }
 
@@ -89,10 +92,13 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::with('company')->where('id', $id)->first();
+        $companies = InsuranceCompany::where('status', 1)->get();
         return view('admin.customers.edit', [
             'title' => $customer->name,
-            'customer' => $customer
+            'customer' => $customer,
+            'companies' => $companies
+
         ]);
     }
 
@@ -113,12 +119,28 @@ class CustomerController extends Controller
             'age'        => trans('admin.Age'),
         ]);
 
-        $customer = Customer::find($id);
+        $customer = Customer::with('company')->where('id', $id)->first();
         $customer->name = $request->name;
         $customer->mobile = $request->mobile;
         $customer->job = $request->job;
         $customer->age = $request->age;
         $customer->save();
+
+        if ($request->company != 0) {
+            InsuranceCustomer::updateOrCreate(
+                [
+                    'customer_id' => $id
+                ],
+                [
+                    'insurance_company_id' => $request->company,
+                    'insurance_number' => $request->insurance_number,
+                    'company_percentage' => $request->percentage,
+                    'national_id' => $request->national_id,
+                ]
+            );
+        } else {
+            InsuranceCustomer::where('customer_id', $id)->delete();
+        }
 
         userLogs([
             'model' => '\App\Models\Customer',

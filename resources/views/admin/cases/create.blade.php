@@ -14,7 +14,11 @@
                             data-allow-clear="true">
                             <option selected disabled>{{ trans('admin.Select Customer') }}</option>
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->name }} - {{ $customer->mobile }}
+                                <option value="{{ $customer->id }}"
+                                    data-company_id="{{ isset($customer->company) ? $customer->company->insurance_company_id : '' }}"
+                                    data-company_name="{{ isset($customer->company) ? $customer->company->company->name : '' }}"
+                                    data-percentag="{{ isset($customer->company) ? $customer->company->company_percentage : '' }}">
+                                    {{ $customer->name }} - {{ $customer->mobile }}
                                 </option>
                             @endforeach
                         </select>
@@ -40,13 +44,6 @@
                             data-allow-clear="true">
                             <option selected disabled>{{ trans('admin.Select Doctor') }}</option>
                         </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="form-check form-switch form-check-reverse mb-0">
-                            <input class="form-check-input" type="checkbox" id="is_package" />
-                            <label class="form-check-label" for="is_package">{{ trans('admin.Package') }}</label>
-                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -78,6 +75,17 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="payment_method" class="form-label">{{ trans('admin.Payment Method') }}<span
+                                class="redStar">*</span></label>
+                        <select id="payment_method" name="payment_method" class="select2 form-select form-select-lg"
+                            data-allow-clear="true">
+                            <option value="cash">{{ trans('admin.cash') }}</option>
+                            <option value="credit">{{ trans('admin.Credit') }}</option>
+                            <option value="package">{{ trans('admin.Package') }}</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="floating-label" for="note">{{ trans('admin.Note') }}</label>
                         <textarea name="note" class="form-control" rows="4" id="note">{{ old('note') }}</textarea>
                     </div>
@@ -94,9 +102,17 @@
     @push('script')
         <script>
             $(document).ready(function() {
+                let price = 0;
+                let percentage = 0;
+
                 $("#specialization").change(function() {
-                    var price = $(this).find(':selected').attr('data-price');
-                    $("#amount").val(price);
+                    price = $(this).find(':selected').attr('data-price');
+
+                    var customerAmount = (price * percentage) / 100;
+
+                    $("#amount").val(customerAmount);
+
+                    $("#company_amount").val(price - customerAmount);
 
                     var id = $(this).val();
                     $.ajax({
@@ -126,6 +142,20 @@
                     } else {
                         $("#company_percent_area").hide('slow')
                     }
+                })
+
+                $("#customer").change(function() {
+                    var company_name = $(this).find(':selected').attr('data-company_name');
+                    var company_id = $(this).find(':selected').attr('data-company_id');
+                    percentage = $(this).find(':selected').attr('data-percentag');
+
+                    if (company_id != "") {
+                        $("#company").empty();
+                        $("#company").append("<option value='0'>{{ trans('admin.Does not belong') }}</option>")
+                        $("#company").append("<option selected value='" + company_id + "'>" + company_name + "</option>")
+                        $("#company_percent_area").show('slow')
+                    }
+
                 })
             });
         </script>

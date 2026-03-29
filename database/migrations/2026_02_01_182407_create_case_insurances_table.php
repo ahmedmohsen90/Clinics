@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('customer_case_id')->index();
             $table->double("percent", 8, 3)->default(0);
             $table->double("amount", 8, 3)->default(0);
-            $table->boolean("is_paid")->default(0);
             $table->timestamps();
             $table->foreign('customer_case_id')->references('id')->on('customer_cases')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onUpdate('cascade')->onDelete('cascade');

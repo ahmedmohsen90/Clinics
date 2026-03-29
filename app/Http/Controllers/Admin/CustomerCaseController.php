@@ -32,23 +32,6 @@ class CustomerCaseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $companies = InsuranceCompany::where('status', 1)->get();
-        $specializations = Specialization::get();
-        $customers = Customer::get();
-
-        return view('admin.cases.create', [
-            'title' => trans('admin.Add New Case'),
-            'specializations' => $specializations,
-            'customers' => $customers,
-            'companies' => $companies,
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function show(int $id)
     {
         $case = CustomerCase::where('id', $id)->with('statuses', 'customer', 'doctor', 'specialization')->first();
@@ -77,6 +60,23 @@ class CustomerCaseController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $companies = InsuranceCompany::where('status', 1)->get();
+        $specializations = Specialization::get();
+        $customers = Customer::with('company')->get();
+
+        return view('admin.cases.create', [
+            'title' => trans('admin.Add New Case'),
+            'specializations' => $specializations,
+            'customers' => $customers,
+            'companies' => $companies,
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -93,20 +93,16 @@ class CustomerCaseController extends Controller
             'amount'          => trans('admin.Amount'),
         ]);
 
-        if ($request->company) {
-            $total = $request->amount + $request->company_amount;
-        } else {
-            $total = $request->amount;
-        }
-
         $case = new CustomerCase();
         $case->company_id = session('company_id');
         $case->customer_id = $request->customer;
         $case->specialization_id = $request->specialization;
         $case->doctor_id = $request->doctor;
-        $case->amount = $request->amount;
-        $case->total = $total;
+        $case->customer_amount = $request->amount;
+        $case->company_amount = $request->company_amount;
+        $case->price = $request->amount + $request->company_amount;
         $case->note = $request->note;
+        $case->payment_method = $request->payment_method;
         $case->save();
 
         CustomerCaseStatus::create([
@@ -115,13 +111,12 @@ class CustomerCaseController extends Controller
         ]);
 
         if ($request->company) {
-
+            $customer = Customer::with('company')->where('id',$request->customer)->first();
             CaseInsurance::create([
                 'insurance_company_id' => $request->company,
                 'customer_case_id' => $case->id,
-                'percent' => ($request->company_amount / $total) * 100,
+                'percent' => $customer->company->company_percentage,
                 'amount' => $request->company_amount,
-                'is_paid' => 0,
             ]);
         }
 
@@ -219,23 +214,27 @@ class CustomerCaseController extends Controller
 
         if ($status == "start") {
             Report::create([
+                'company_id' => session('company_id'),
                 'reportable_type' => "App\Models\CustomerCase",
                 'reportable_id' => $id,
-                'amount' => $case->total,
+                'amount' => $case->customer_amount,
             ]);
-
 
             if (isset($case->company)) {
                 $company = InsuranceCompany::find($case->company->insurance_company_id);
                 $caseInsureance = CaseInsurance::find($case->id);
 
                 $debt = Debt::create([
-                    'name' => $company->name,
+                    'company_id' => session('company_id'),
+                    'debtable_type' => "App\Models\InsuranceCompany",
+                    'debtable_id' => $company->id,
                     'amount' => $caseInsureance->amount,
-                    'note' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
+                    'description' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
+                    'operation' => "entitlements",
                 ]);
 
                 Report::create([
+                    'company_id' => session('company_id'),
                     'reportable_type' => "App\Models\Debt",
                     'reportable_id' => $debt->id,
                     'amount' => $caseInsureance->amount,

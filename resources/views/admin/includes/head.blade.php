@@ -58,4 +58,15 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('dashboard') }}/assets/js/config.js"></script>
     @stack('styles')
+
+    @if (lang() == 'ar')
+        <script>
+            localStorage.setItem('templateCustomizer-vertical-menu-template--Rtl', true);
+        </script>
+    @else
+        <script>
+            localStorage.setItem('templateCustomizer-vertical-menu-template--Rtl', false);
+        </script>
+    @endif
+
 </head>
