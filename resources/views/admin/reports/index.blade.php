@@ -58,13 +58,14 @@
                                 <tr>
                                     <th>{{ trans('admin.Description') }}</th>
                                     <th>{{ trans('admin.Amount') }}</th>
+                                    <th>{{ trans('admin.Operation') }}</th>
                                     <th>{{ trans('admin.Date') }}</th>
                                     <th>{{ trans('admin.Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($reports as $report)
-                                    <tr class="table-{{ $report->operation == 'plus' ? 'success' : 'danger' }}">
+                                    <tr>
                                         <td>
                                             @if ($report->reportable_type == 'App\Models\CustomerCase')
                                                 <i
@@ -82,6 +83,13 @@
                                             @endif
                                         </td>
                                         <td>{{ number_format($report->amount, 2) }}</td>
+                                        <td>
+                                            @if ($report->operation == 'plus')
+                                                <i class="fas fa-arrow-circle-down text-success"></i>
+                                            @else
+                                                <i class="fas fa-clock text-danger"></i>
+                                            @endif
+                                        </td>
                                         <td>{{ $report->created_at }}</td>
                                         <td>
                                             <a href="{{ aurl('reports/view/' . $report->id) }}"
