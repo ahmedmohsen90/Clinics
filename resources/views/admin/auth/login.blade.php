@@ -87,6 +87,7 @@
             <!-- Login -->
             <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
                 <div class="w-px-400 mx-auto">
+                    @include('admin.includes.messages')
                     <!-- Logo -->
                     <div class="app-brand mb-4">
                         <a href="{{ aurl('') }}" class="app-brand-link gap-2">
@@ -100,9 +101,14 @@
                     <form id="formAuthentication" class="mb-3" action="{{ aurl('auth/login') }}" method="POST">
                         @csrf
                         <div class="mb-3">
+                            <label for="company" class="form-label">Company</label>
+                            <input type="text" class="form-control" id="company" name="company"
+                                placeholder="Enter your Company ID" autofocus />
+                        </div>
+                        <div class="mb-3">
                             <label for="mobile" class="form-label">Mobile</label>
                             <input type="text" class="form-control" id="mobile" name="mobile"
-                                placeholder="Enter your Mobile" autofocus />
+                                placeholder="Enter your Mobile" />
                         </div>
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">

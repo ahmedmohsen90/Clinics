@@ -11,39 +11,29 @@
                                 <span class="avatar-initial rounded bg-label-success"><i
                                         class="fas fa-arrow-circle-down"></i></span>
                             </div>
-                            <h4 class="ms-1 mb-0">{{ number_format($collected, 2) }} {{ trans('admin.EGP') }}</h4>
+                            <h4 class="ms-1 mb-0">{{ number_format($total, 2) }} {{ trans('admin.EGP') }}</h4>
                         </div>
-                        <p class="mb-1">{{ trans('admin.Total Collected') }}</p>
+                        <p class="mb-1">{{ trans('admin.Total') }}</p>
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-6 col-lg-6 mb-4">
-                <div class="card card-border-shadow-danger">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-2 pb-1">
-                            <div class="avatar me-2">
-                                <span class="avatar-initial rounded bg-label-danger"><i class="fas fa-clock"></i></span>
-                            </div>
-                            <h4 class="ms-1 mb-0">{{ number_format($entitlements, 2) }} {{ trans('admin.EGP') }}</h4>
-                        </div>
-                        <p class="mb-1">{{ trans('admin.Total Entitlements') }}</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
     <div class="col-xl-12 col-md-12">
         <div class="card">
             <div class="card-header">
-                <h5>{{ $title }}
-                    @if ($entitlements > 0)
-                        <button id="collection" class="btn btn-pill btn-outline-success btn-air-success pull-right"><i
-                                class="fas fa-plus"></i>
-                            {{ trans('admin.Collection') }}</button>
+                <h5>
+                    {{ $title }}
+                    @if ($total > 0)
+                        <a class="btn btn-pill btn-outline-success btn-air-success pull-right" href="#"><i
+                                class="far fa-file-excel"></i></a>&nbsp;
+                        <a class="btn btn-pill btn-outline-danger btn-air-danger pull-right" href="#"><i
+                                class="fas fa-file-pdf"></i></a>
+                        <button id="transfer" class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i
+                                class="fas fa-exchange-alt"></i> {{ trans('admin.Transfer') }}</a>
                     @endif
+
                 </h5>
             </div>
             <div class="card-block row">
@@ -59,39 +49,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($debts as $debt)
+                                @foreach ($logs as $log)
                                     <tr>
-                                        <td>{{ number_format($debt->amount, 2) }} {{ trans('admin.EGP') }}</td>
+                                        <td>{{ number_format($log->amount, 2) }} {{ trans('admin.EGP') }}</td>
                                         <td>
-                                            @if ($debt->operation == 'collected')
+                                            @if ($log->operation == 'plus')
                                                 <i class="fas fa-arrow-circle-down text-success"></i>
                                             @else
-                                                <i class="fas fa-clock text-danger"></i>
+                                                <i class="fas fa-arrow-circle-up text-danger"></i>
                                             @endif
                                         </td>
-                                        <td>{{ $debt->description }}</td>
-                                        <td>{{ $debt->created_at }}</td>
+                                        <td>{{ $log->description }}</td>
+                                        <td>{{ $log->created_at }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $debts->links('admin.pagination.index') }}
+                        {{ $logs->links('admin.pagination.index') }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tooltipmodal" aria-hidden="true"
-        id="collectionModal">
+        id="transferModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Collection') }} -
-                        {{ $company->name }}</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Transfer') }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ aurl('debts/create') }}" method="POST">
+                <form action="{{ aurl('payment_methods/transfer') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="col-md-12 text-center">
@@ -108,18 +98,17 @@
                             <input type="text" name="description" value="" class="form-control" id="description">
                         </div>
                         <div class="mb-3">
-                            <label class="floating-label" for="payment_method_id">{{ trans('admin.Receiving Process') }} <span
-                                    class="redStar">*</span></label>
+                            <label class="floating-label" for="payment_method_id">{{ trans('admin.Transfer To') }}
+                                <span class="redStar">*</span></label>
                             <select name="payment_method_id" class="form-control" id="payment_method_id">
-                                @foreach ($paymentMethods as $method)
-                                    <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                @foreach ($paymentMethods as $pMethod)
+                                    <option value="{{ $pMethod->id }}">{{ $pMethod->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <input type="hidden" id="company_id" name="company_id" value="{{ $company->id }}">
-                        <input type="hidden" id="debtable_type" name="debtable_type" value="App\Models\InsuranceCompany">
-                        <input type="hidden" id="operation" name="operation" value="collected">
+                        <input type="hidden" id="current_payment_method_id" name="current_payment_method_id"
+                            value="{{ $method->id }}">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i
@@ -127,7 +116,7 @@
                             {{ trans('admin.Close') }}</button>
 
                         <button type="submit"
-                            class="btn btn-pill btn-outline-success btn-air-success">{{ trans('admin.Collection') }}</button>
+                            class="btn btn-pill btn-outline-primary btn-air-primary">{{ trans('admin.Transfer') }}</button>
                     </div>
                 </form>
             </div>
@@ -137,10 +126,9 @@
     @push('script')
         <script>
             $(document).ready(function() {
-                $("#collection").click(function() {
-                    $("#collectionModal").modal('show');
+                $("#transfer").click(function() {
+                    $("#transferModal").modal('show');
                 });
-
             });
         </script>
     @endpush

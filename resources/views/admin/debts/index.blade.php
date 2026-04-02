@@ -25,7 +25,7 @@
                             <div class="avatar me-2">
                                 <span class="avatar-initial rounded bg-label-danger"><i class="fas fa-clock"></i></span>
                             </div>
-                            <h4 class="ms-1 mb-0">{{ number_format($entitlements - $collected, 2) }}
+                            <h4 class="ms-1 mb-0">{{ number_format($entitlements, 2) }}
                                 {{ trans('admin.EGP') }}</h4>
                         </div>
                         <p class="mb-1">{{ trans('admin.Total Entitlements') }}</p>

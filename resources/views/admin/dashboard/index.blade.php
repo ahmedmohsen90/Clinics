@@ -8,64 +8,6 @@
                         <div class="avatar me-2">
                             <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-chart-pie"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">{{ number_format($reportToday, 2) }}</h4>
-                    </div>
-                    <p class="mb-1">{{ trans('admin.Profit Today') }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-3 mb-4">
-            <div class="card card-border-shadow-warning">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2 pb-1">
-                        <div class="avatar me-2">
-                            <span class="avatar-initial rounded bg-label-warning"><i class="fas fa-chart-line"></i></span>
-                        </div>
-                        <h4 class="ms-1 mb-0">{{ number_format($reportWeek, 2) }}</h4>
-                    </div>
-                    <p class="mb-1">{{ trans('admin.Profit Week') }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-3 mb-4">
-            <div class="card card-border-shadow-danger">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2 pb-1">
-                        <div class="avatar me-2">
-                            <span class="avatar-initial rounded bg-label-danger"><i class="fas fa-chart-bar"></i></span>
-                        </div>
-                        <h4 class="ms-1 mb-0">{{ number_format($reportMonth, 2) }}</h4>
-                    </div>
-                    <p class="mb-1">{{ trans('admin.Profit Month') }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-3 mb-4">
-            <div class="card card-border-shadow-info">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2 pb-1">
-                        <div class="avatar me-2">
-                            <span class="avatar-initial rounded bg-label-info"><i class="fas fa-chart-area"></i></span>
-                        </div>
-                        <h4 class="ms-1 mb-0">{{ number_format($allReport, 2) }}</h4>
-                    </div>
-                    <p class="mb-1">{{ trans('admin.All Profits') }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6 col-lg-3 mb-4">
-            <div class="card card-border-shadow-primary">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2 pb-1">
-                        <div class="avatar me-2">
-                            <span class="avatar-initial rounded bg-label-primary"><i class="fas fa-chart-pie"></i></span>
-                        </div>
                         <h4 class="ms-1 mb-0">{{ $casestoday }}</h4>
                     </div>
                     <p class="mb-1">{{ trans('admin.Cases Today') }}</p>

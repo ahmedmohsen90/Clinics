@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('debts', function (Blueprint $table) {
+        Schema::create('accountings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->index();
-            $table->foreignId('payment_method_id')->index()->nullable();
-            $table->morphs('debtable');
+            $table->morphs('accountingable');
             $table->double('amount', 8, 2);
-            $table->text('description');
-            $table->enum('operation', ['collected', 'entitlements'])->default('entitlements');
+            $table->enum('operation', ['', 'plus', 'minus'])->default('plus');
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('debts');
+        Schema::dropIfExists('accountings');
     }
 };

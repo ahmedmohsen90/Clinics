@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AccountingEvent;
+use App\Events\PaymentMethodEvent;
 use App\Http\Controllers\Controller;
+use App\Listeners\PaymentMethodTransactionListner;
 use App\Models\Debt;
 use App\Models\Report;
 use Illuminate\Http\Request;
@@ -19,14 +22,14 @@ class DebtController extends Controller
             'debtable_type' => "App\Models\InsuranceCompany",
         ])->with('debtable')->latest()->paginate(50);
 
-        $entitlements = DB::table('debts')->where([
-            'operation' => 'entitlements',
-            'debtable_type' => "App\Models\InsuranceCompany",
+        $entitlements = DB::table('accountings')->where([
+            'operation' => 'minus',
+            'accountingable_type' => "App\Models\InsuranceCompany",
         ])->sum('amount');
 
-        $collected = DB::table('debts')->where([
-            'operation' => 'collected',
-            'debtable_type' => "App\Models\InsuranceCompany",
+        $collected = DB::table('accountings')->where([
+            'operation' => 'plus',
+            'accountingable_type' => "App\Models\InsuranceCompany",
         ])->sum('amount');
 
         return view('admin.debts.index', [
@@ -52,6 +55,7 @@ class DebtController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'amount'        => 'required',
             'description'        => 'nullable',
@@ -67,7 +71,34 @@ class DebtController extends Controller
         $debt->amount = $request->amount;
         $debt->description = $request->description;
         $debt->operation = $request->operation;
+        $debt->payment_method_id = $request->payment_method_id;
         $debt->save();
+
+        if ($request->debtable_type == "App\Models\InsuranceCompany") {
+            $dataInsuranceCompany = [
+                "accountingable_type" => "App\Models\InsuranceCompany",
+                "accountingable_id" => $request->company_id,
+                "operation" => 'plus',
+                "amount" => $request->amount,
+            ];
+            event(new AccountingEvent($dataInsuranceCompany));
+        }
+
+        $dataTotalPayment = [
+            "accountingable_type" => "App\Models\PaymentMethod",
+            "accountingable_id" => $request->payment_method_id,
+            "operation" => 'plus',
+            "amount" => $request->amount,
+        ];
+        event(new AccountingEvent($dataTotalPayment));
+
+        $dataPaymentMethod = [
+            "payment_id" => $request->payment_method_id,
+            "amount" => $request->amount,
+            "operation" => $request->operation == "collected" ? 'plus' : "minus",
+            "description" => $request->description
+        ];
+        event(new PaymentMethodEvent($dataPaymentMethod));
 
         Report::create([
             'company_id' => session('company_id'),

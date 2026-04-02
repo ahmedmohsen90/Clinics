@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\InsuranceCompany;
 use App\Models\InsuranceCustomer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -43,20 +44,25 @@ class CustomerController extends Controller
             'name'          => 'required',
             'mobile'        => 'required',
             'job'        => 'required',
-            'age'        => 'required',
         ], [], [
             'name'          => trans('admin.Name'),
             'mobile'        => trans('admin.Mobile'),
             'job'        => trans('admin.Job'),
-            'age'        => trans('admin.Age'),
         ]);
+
+        if (!checkdate($request->month, $request->day, $request->year)) {
+            return back()->withErrors(['birthdate' => trans('admin.Wrong Birthdate')]);
+        }
+
+        $birthdate = $request->year . '-' . $request->month . '-' . $request->day;
+        $birthdate = \Carbon\Carbon::createFromFormat('Y-n-j', $birthdate)->format('Y-m-d');
 
         $customer = new Customer();
         $customer->company_id = session('company_id');
         $customer->name = $request->name;
         $customer->mobile = $request->mobile;
         $customer->job = $request->job;
-        $customer->age = $request->age;
+        $customer->birthdate = $birthdate;
         $customer->save();
 
         if ($request->company != 0) {
@@ -111,19 +117,26 @@ class CustomerController extends Controller
             'name'          => 'required',
             'mobile'        => 'required',
             'job'        => 'required',
-            'age'        => 'required',
+            'birthdate'        => 'nullable',
         ], [], [
             'name'          => trans('admin.Name'),
             'mobile'        => trans('admin.Mobile'),
             'job'        => trans('admin.Job'),
-            'age'        => trans('admin.Age'),
+            'birthdate'        => trans('admin.Birthdate'),
         ]);
+
+        if (!checkdate($request->month, $request->day, $request->year)) {
+            return back()->withErrors(['birthdate' => trans('admin.Wrong Birthdate')]);
+        }
+
+        $birthdate = $request->year . '-' . $request->month . '-' . $request->day;
+        $birthdate = \Carbon\Carbon::createFromFormat('Y-n-j', $birthdate)->format('Y-m-d');
 
         $customer = Customer::with('company')->where('id', $id)->first();
         $customer->name = $request->name;
         $customer->mobile = $request->mobile;
         $customer->job = $request->job;
-        $customer->age = $request->age;
+        $customer->birthdate = $birthdate;
         $customer->save();
 
         if ($request->company != 0) {

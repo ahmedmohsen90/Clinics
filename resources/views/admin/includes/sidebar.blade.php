@@ -291,6 +291,25 @@
             </ul>
         </li>
 
+        <li class="menu-item {{ openMenu('payment_methods') }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fas fa-credit-card"></i>&nbsp;&nbsp;
+                <div>{{ trans('admin.Payment Method') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ activeMenu('payment_methods') }}">
+                    <a href="{{ aurl('payment_methods') }}" class="menu-link">
+                        <div>{{ trans('admin.Payment Method') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ activeMenu('payment_methods/create') }}">
+                    <a href="{{ aurl('payment_methods/create') }}" class="menu-link">
+                        <div>{{ trans('admin.Add New Payment Method') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Apps & Pages -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ trans('admin.Settings') }}</span>

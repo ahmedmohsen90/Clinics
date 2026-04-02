@@ -31,10 +31,38 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="floating-label" for="age">{{ trans('admin.Age') }} <span
-                                class="redStar">*</span></label>
-                        <input type="number" name="age" value="{{ $customer->age }}" class="form-control"
-                            id="age">
+                        <label class="floating-label">{{ trans('admin.Birthdate') }}</label>
+                        <div class="row">
+                            <!-- Day -->
+                            <div class="col">
+                                <select name="day" class="form-control">
+                                    <option value="">{{ trans('admin.Day') }}</option>
+                                    @for ($d = 1; $d <= 31; $d++)
+                                        <option value="{{ $d }}">{{ $d }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            <!-- Month -->
+                            <div class="col">
+                                <select name="month" class="form-control">
+                                    <option value="">{{ trans('admin.Month') }}</option>
+                                    @for ($m = 1; $m <= 12; $m++)
+                                        <option value="{{ $m }}">{{ $m }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            <!-- Year -->
+                            <div class="col">
+                                <select name="year" class="form-control">
+                                    <option value="">{{ trans('admin.Year') }}</option>
+                                    @for ($y = date('Y'); $y >= 1950; $y--)
+                                        <option value="{{ $y }}">{{ $y }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -51,25 +79,28 @@
                         </select>
                     </div>
 
-                    <div id="insuranceArea" style="{{ isset($customer->company) && $customer->company->insurance_company_id == $company->id ? '' : 'display: none' }}">
+                    <div id="insuranceArea"
+                        style="{{ isset($customer->company) && $customer->company->insurance_company_id == $company->id ? '' : 'display: none' }}">
                         <div class="mb-3">
                             <label class="floating-label" for="insurance_number">{{ trans('admin.Insurance Number') }}
                                 <span class="redStar">*</span></label>
                             <input type="number" name="insurance_number"
-                                value="{{ isset($customer->company)?$customer->company->insurance_number:"" }}" class="form-control"
-                                id="insurance_number">
+                                value="{{ isset($customer->company) ? $customer->company->insurance_number : '' }}"
+                                class="form-control" id="insurance_number">
                         </div>
 
                         <div class="mb-3">
                             <label class="floating-label" for="percentage">{{ trans('admin.Customer Percent') }} <span
                                     class="redStar">*</span></label>
-                            <input type="number" name="percentage" value="{{ isset($customer->company)?$customer->company->company_percentage:"" }}"
+                            <input type="number" name="percentage"
+                                value="{{ isset($customer->company) ? $customer->company->company_percentage : '' }}"
                                 class="form-control" id="percentage">
                         </div>
 
                         <div class="mb-3">
                             <label class="floating-label" for="national_id">{{ trans('admin.National Id') }}</label>
-                            <input type="number" name="national_id" value="{{ isset($customer->company)?$customer->company->national_id:"" }}"
+                            <input type="number" name="national_id"
+                                value="{{ isset($customer->company) ? $customer->company->national_id : '' }}"
                                 class="form-control" id="national_id">
                         </div>
                     </div>

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AccountingEvent;
+use App\Events\PaymentMethodEvent;
 use App\Http\Controllers\Controller;
+use App\Listeners\PaymentMethodTransactionListner;
 use App\Models\CaseInsurance;
 use App\Models\Customer;
 use App\Models\CustomerCase;
@@ -10,6 +13,7 @@ use App\Models\CustomerCaseStatus;
 use App\Models\Debt;
 use App\Models\Doctor;
 use App\Models\InsuranceCompany;
+use App\Models\PaymentMethod;
 use App\Models\Report;
 use App\Models\Specialization;
 use Carbon\Carbon;
@@ -27,6 +31,78 @@ class CustomerCaseController extends Controller
             'title' => trans('admin.All Cases'),
             'cases' => $cases
         ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $companies = InsuranceCompany::where('status', 1)->get();
+        $specializations = Specialization::get();
+        $customers = Customer::with('company')->get();
+        $paymentMethods = PaymentMethod::get();
+        return view('admin.cases.create', [
+            'title' => trans('admin.Add New Case'),
+            'specializations' => $specializations,
+            'customers' => $customers,
+            'companies' => $companies,
+            'paymentMethods' => $paymentMethods,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'customer'          => 'required',
+            'specialization'          => 'required',
+            'doctor'          => 'required',
+            'amount'          => 'required',
+        ], [], [
+            'customer'          => trans('admin.Customer'),
+            'specialization'          => trans('admin.Specialization'),
+            'doctor'          => trans('admin.Doctor'),
+            'amount'          => trans('admin.Amount'),
+        ]);
+
+        $case = new CustomerCase();
+        $case->company_id = session('company_id');
+        $case->customer_id = $request->customer;
+        $case->specialization_id = $request->specialization;
+        $case->doctor_id = $request->doctor;
+        $case->customer_amount = $request->amount;
+        $case->company_amount = $request->company_amount;
+        $case->price = $request->amount + $request->company_amount;
+        $case->note = $request->note;
+        $case->payment_method_id = $request->payment_method;
+        $case->save();
+
+        CustomerCaseStatus::create([
+            'customer_case_id' => $case->id,
+            'status' => 'pending',
+        ]);
+
+        if ($request->company) {
+            $customer = Customer::with('company')->where('id', $request->customer)->first();
+            CaseInsurance::create([
+                'insurance_company_id' => $request->company,
+                'customer_case_id' => $case->id,
+                'percent' => $customer->company->company_percentage,
+                'amount' => $request->company_amount,
+            ]);
+        }
+
+        userLogs([
+            'model' => '\App\Models\CustomerCase',
+            'model_id' => $case->id,
+            'description_ar' => 'اضافة حالة جديد',
+            'description_en' => 'Add New Case',
+            'status' => 'create'
+        ]);
+        return redirect(aurl('cases'))->with('success', 'operation success');
     }
 
     /**
@@ -57,77 +133,6 @@ class CustomerCaseController extends Controller
             'case' => $case,
             'durationMinutes' => $durationMinutes
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $companies = InsuranceCompany::where('status', 1)->get();
-        $specializations = Specialization::get();
-        $customers = Customer::with('company')->get();
-
-        return view('admin.cases.create', [
-            'title' => trans('admin.Add New Case'),
-            'specializations' => $specializations,
-            'customers' => $customers,
-            'companies' => $companies,
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'customer'          => 'required',
-            'specialization'          => 'required',
-            'doctor'          => 'required',
-            'amount'          => 'required',
-        ], [], [
-            'customer'          => trans('admin.Customer'),
-            'specialization'          => trans('admin.Specialization'),
-            'doctor'          => trans('admin.Doctor'),
-            'amount'          => trans('admin.Amount'),
-        ]);
-
-        $case = new CustomerCase();
-        $case->company_id = session('company_id');
-        $case->customer_id = $request->customer;
-        $case->specialization_id = $request->specialization;
-        $case->doctor_id = $request->doctor;
-        $case->customer_amount = $request->amount;
-        $case->company_amount = $request->company_amount;
-        $case->price = $request->amount + $request->company_amount;
-        $case->note = $request->note;
-        $case->payment_method = $request->payment_method;
-        $case->save();
-
-        CustomerCaseStatus::create([
-            'customer_case_id' => $case->id,
-            'status' => 'pending',
-        ]);
-
-        if ($request->company) {
-            $customer = Customer::with('company')->where('id',$request->customer)->first();
-            CaseInsurance::create([
-                'insurance_company_id' => $request->company,
-                'customer_case_id' => $case->id,
-                'percent' => $customer->company->company_percentage,
-                'amount' => $request->company_amount,
-            ]);
-        }
-
-        userLogs([
-            'model' => '\App\Models\CustomerCase',
-            'model_id' => $case->id,
-            'description_ar' => 'اضافة حالة جديد',
-            'description_en' => 'Add New Case',
-            'status' => 'create'
-        ]);
-        return redirect(aurl('cases'))->with('success', 'operation success');
     }
 
     /**
@@ -220,15 +225,30 @@ class CustomerCaseController extends Controller
                 'amount' => $case->customer_amount,
             ]);
 
+            $dataCustomer = [
+                "accountingable_type" => 'App\Models\PaymentMethod',
+                "accountingable_id" => $case->payment_method_id,
+                "operation" => 'plus',
+                "amount" => $case->customer_amount,
+            ];
+            event(new AccountingEvent($dataCustomer));
+
+            $dataPaymentMethod = [
+                "payment_id" => $case->payment_method_id,
+                "amount" => $case->customer_amount,
+                "operation" => "plus",
+                'description' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
+            ];
+            event(new PaymentMethodEvent($dataPaymentMethod));
+
             if (isset($case->company)) {
                 $company = InsuranceCompany::find($case->company->insurance_company_id);
-                $caseInsureance = CaseInsurance::find($case->id);
 
                 $debt = Debt::create([
                     'company_id' => session('company_id'),
                     'debtable_type' => "App\Models\InsuranceCompany",
                     'debtable_id' => $company->id,
-                    'amount' => $caseInsureance->amount,
+                    'amount' => $case->company_amount,
                     'description' => "الحالة رقم " . $case->id . " بتاريخ  " . Carbon::parse($case->created_at)->format('Y-m-d'),
                     'operation' => "entitlements",
                 ]);
@@ -237,9 +257,18 @@ class CustomerCaseController extends Controller
                     'company_id' => session('company_id'),
                     'reportable_type' => "App\Models\Debt",
                     'reportable_id' => $debt->id,
-                    'amount' => $caseInsureance->amount,
+                    'amount' => $case->company_amount,
                     'operation' => 'minus',
                 ]);
+
+                $dataInsuranceCompany = [
+                    "accountingable_type" => 'App\Models\InsuranceCompany',
+                    "accountingable_id" => $company->id,
+                    "operation" => 'minus',
+                    "amount" => $case->company_amount,
+                ];
+
+                event(new AccountingEvent($dataInsuranceCompany));
             }
         }
 

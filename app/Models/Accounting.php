@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Model;
 
-class Debt extends Model
+class Accounting extends Model
 {
     protected $guarded = [];
 
@@ -15,15 +15,5 @@ class Debt extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new CompanyScope);
-    }
-
-    public function debtable()
-    {
-        return $this->morphTo();
-    }
-
-    public function payment_method()
-    {
-        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 }

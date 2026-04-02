@@ -1,7 +1,12 @@
 @extends('admin.layouts.app')
 @section('content')
     @push('styles')
-        <link rel="stylesheet" type="text/css" href="{{ asset('dashboard') }}/assets/css/vendors/select2.css">
+        <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/vendor/libs/pickr/pickr-themes.css" />
+        <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/vendor/libs/flatpickr/flatpickr.css" />
+        <link rel="stylesheet"
+            href="{{ asset('dashboard') }}/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
+        <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
+        <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/vendor/libs/pickr/pickr-themes.css" />
     @endpush
     <div class="col-md-12 col-xl-12">
         <div class="card">
@@ -31,10 +36,38 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="floating-label" for="age">{{ trans('admin.Age') }} <span
-                                class="redStar">*</span></label>
-                        <input type="number" name="age" value="{{ old('age') }}" class="form-control"
-                            id="age">
+                        <label class="floating-label">{{ trans('admin.Birthdate') }}</label>
+                        <div class="row">
+                            <!-- Day -->
+                            <div class="col">
+                                <select name="day" class="form-control">
+                                    <option value="">{{ trans('admin.Day') }}</option>
+                                    @for ($d = 1; $d <= 31; $d++)
+                                        <option value="{{ $d }}">{{ $d }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            <!-- Month -->
+                            <div class="col">
+                                <select name="month" class="form-control">
+                                    <option value="">{{ trans('admin.Month') }}</option>
+                                    @for ($m = 1; $m <= 12; $m++)
+                                        <option value="{{ $m }}">{{ $m }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            <!-- Year -->
+                            <div class="col">
+                                <select name="year" class="form-control">
+                                    <option value="">{{ trans('admin.Year') }}</option>
+                                    @for ($y = date('Y'); $y >= 1950; $y--)
+                                        <option value="{{ $y }}">{{ $y }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -80,9 +113,16 @@
         </div>
     </div>
     @push('script')
+        <script src="{{ asset('dashboard') }}/assets/vendor/libs/pickr/pickr.js"></script>
+        <script src="{{ asset('dashboard') }}/assets/vendor/libs/moment/moment.js"></script>
+        <script src="{{ asset('dashboard') }}/assets/vendor/libs/flatpickr/flatpickr.js"></script>
+        <script src="{{ asset('dashboard') }}/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js">
+        </script>
+        <script src="{{ asset('dashboard') }}/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
+        <script src="{{ asset('dashboard') }}/assets/js/forms-pickers.js"></script>
+
         <script>
             $(document).ready(function() {
-
                 $("#company").change(function() {
                     var percent = $(this).find(':selected').val();
                     if (percent != 0) {

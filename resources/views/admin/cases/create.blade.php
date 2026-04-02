@@ -79,9 +79,9 @@
                                 class="redStar">*</span></label>
                         <select id="payment_method" name="payment_method" class="select2 form-select form-select-lg"
                             data-allow-clear="true">
-                            <option value="cash">{{ trans('admin.cash') }}</option>
-                            <option value="credit">{{ trans('admin.Credit') }}</option>
-                            <option value="package">{{ trans('admin.Package') }}</option>
+                            @foreach ($paymentMethods as $method)
+                                <option value="{{ $method->id }}">{{ $method->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -152,7 +152,8 @@
                     if (company_id != "") {
                         $("#company").empty();
                         $("#company").append("<option value='0'>{{ trans('admin.Does not belong') }}</option>")
-                        $("#company").append("<option selected value='" + company_id + "'>" + company_name + "</option>")
+                        $("#company").append("<option selected value='" + company_id + "'>" + company_name +
+                            "</option>")
                         $("#company_percent_area").show('slow')
                     }
 

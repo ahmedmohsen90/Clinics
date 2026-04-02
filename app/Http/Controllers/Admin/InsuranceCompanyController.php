@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounting;
 use App\Models\Debt;
 use App\Models\InsuranceCompany;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 
 class InsuranceCompanyController extends Controller
@@ -132,24 +134,27 @@ class InsuranceCompanyController extends Controller
             'debtable_id' => $company->id,
         ])->latest()->paginate(50);
 
-        $entitlements = Debt::where([
-            'operation' => 'entitlements',
-            'debtable_type' => "App\Models\InsuranceCompany",
-            'debtable_id' => $company->id,
+        $entitlements = Accounting::where([
+            'operation' => 'minus',
+            'accountingable_type' => "App\Models\InsuranceCompany",
+            'accountingable_id' => $company->id,
         ])->sum('amount');
 
-        $collected = Debt::where([
-            'operation' => 'collected',
-            'debtable_type' => "App\Models\InsuranceCompany",
-            'debtable_id' => $company->id,
+        $collected = Accounting::where([
+            'operation' => 'plus',
+            'accountingable_type' => "App\Models\InsuranceCompany",
+            'accountingable_id' => $company->id,
         ])->sum('amount');
+
+        $paymentMethods = PaymentMethod::get();
 
         return view('admin.insurance_companies.financials', [
             'title' => trans('admin.Financials') . " - " . $company->name,
             'debts' => $debts,
             'company' => $company,
             'entitlements' => $entitlements,
-            'collected' => $collected
+            'collected' => $collected,
+            'paymentMethods'=>$paymentMethods
         ]);
     }
 }

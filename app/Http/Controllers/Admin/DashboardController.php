@@ -23,11 +23,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $reportToday = $this->reportTotal(today(), today()->endOfDay());
-        $reportWeek  = $this->reportTotal(now()->startOfWeek(), now()->endOfWeek());
-        $reportMonth = $this->reportTotal(now()->startOfMonth(), now()->endOfMonth());
-        $allReport   = $this->reportTotal();
-
         $casestoday = DB::table('customer_cases')->select('id')->whereDate('created_at', date('Y-m-d'))->count();
         $casesweek = DB::table('customer_cases')->select('id')->whereBetween('created_at', [Carbon::today()->startOfWeek(), Carbon::today()->endOfWeek()])->count();
         $casesmonth = DB::table('customer_cases')->select('id')->whereBetween('created_at', [Carbon::today()->startOfMonth(), Carbon::today()->endOfMonth()])->count();
@@ -79,10 +74,6 @@ class DashboardController extends Controller
             'casesmonth' => $casesmonth,
             'casesAll' => $casesAll,
             'ordersSum' => $ordersSum,
-            'reportToday' => $reportToday,
-            'reportWeek' => $reportWeek,
-            'reportMonth' => $reportMonth,
-            'allReport' => $allReport,
         ]);
     }
 

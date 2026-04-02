@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Middleware\Lang;
 use Illuminate\Support\Facades\Route;
@@ -171,6 +172,17 @@ Route::middleware([Lang::class])->group(function () {
         Route::group(['prefix' => 'exports'], function () {
             Route::get('debts', [ExportController::class, 'debts']);
             Route::get('pdf/debts', [ExportController::class, 'debts']);
+        });
+
+        Route::group(['prefix' => 'payment_methods'], function () {
+            Route::get('', [PaymentMethodController::class, 'index']);
+            Route::get('create', [PaymentMethodController::class, 'create']);
+            Route::get('edit/{id}', [PaymentMethodController::class, 'edit']);
+            Route::get('financials/{id}', [PaymentMethodController::class, 'financials']);
+            Route::post('create', [PaymentMethodController::class, 'store']);
+            Route::post('transfer', [PaymentMethodController::class, 'transfer']);
+            Route::post('update/{id}', [PaymentMethodController::class, 'update']);
+            Route::post('delete', [PaymentMethodController::class, 'destroy']);
         });
 
     });

@@ -23,6 +23,11 @@ class CustomerCase extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function payment_method()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');

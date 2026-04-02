@@ -20,11 +20,17 @@ class AuthController extends Controller
 
     public function auth(Request $request)
     {
-
         $data = $request->validate([
+            'company' => 'required',
             'mobile' => 'required',
             'password' => 'required',
         ]);
+
+        if (!str_starts_with($data['company'], 'cli')) {
+            return back()->withErrors(['company' => trans('admin.Wrong Company ID')]);
+        }
+
+        $data['company'] = substr($data['company'], 3);
 
         if ($request->remember == "on") {
             $remember = true;
@@ -32,9 +38,13 @@ class AuthController extends Controller
             $remember = false;
         }
 
-        if (Auth::attempt($data, $remember)) {
+        if (Auth::attempt([
+            'mobile' => $request->mobile,
+            'password' => $request->password,
+            'company_id' => substr($request->company, 3),
+        ], $remember)) {
             session([
-                'company_id' => Auth::user()->company_id
+                'company_id' => substr($request->company, 3)
             ]);
             userLogs([
                 'model' => '\App\Models\User',
