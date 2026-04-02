@@ -55,7 +55,7 @@ class AuthController extends Controller
             ]);
             return redirect(aurl(''))->with('success', 'login success');
         }
-        return redirect(aurl('login'))->with('faild', 'login faild');
+        return redirect(url('login'))->with('faild', 'login faild');
     }
 
     public function logout()
