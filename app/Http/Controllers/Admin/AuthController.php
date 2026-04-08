@@ -53,9 +53,9 @@ class AuthController extends Controller
                 'description_en' => 'Login',
                 'status' => 'login'
             ]);
-            return redirect(aurl(''))->with('success', 'login success');
+            return redirect(url(''))->with('success', 'login success');
         }
-        return redirect(aurl('login'))->with('faild', 'login faild');
+        return redirect(url('auth/login'))->with('faild', 'login faild');
     }
 
     public function logout()

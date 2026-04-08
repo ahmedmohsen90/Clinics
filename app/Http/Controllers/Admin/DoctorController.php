@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CustomerCase;
 use App\Models\Doctor;
 use App\Models\Specialization;
 use App\Models\SpecializationDoctor;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DoctorController extends Controller
 {
@@ -91,7 +94,29 @@ class DoctorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function show(int $id)
+    {
+        $doctor = Doctor::with('specializations.specialization')->where('id', $id)->first();
+        $cases = CustomerCase::with('customer', 'specialization')->where('doctor_id', $id)->paginate(50);
+
+        $casestoday = DB::table('customer_cases')->select('id')->where('doctor_id', $id)->whereDate('created_at', date('Y-m-d'))->count();
+        $casesweek = DB::table('customer_cases')->select('id')->where('doctor_id', $id)->whereBetween('created_at', [Carbon::today()->startOfWeek(), Carbon::today()->endOfWeek()])->count();
+        $casesmonth = DB::table('customer_cases')->select('id')->where('doctor_id', $id)->whereBetween('created_at', [Carbon::today()->startOfMonth(), Carbon::today()->endOfMonth()])->count();
+
+        return view('admin.doctors.view', [
+            'title' => $doctor->name,
+            'doctor' => $doctor,
+            'cases' => $cases,
+            'casestoday' => $casestoday,
+            'casesweek' => $casesweek,
+            'casesmonth' => $casesmonth,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(int $id)
     {
         $doctor = Doctor::find($id);
         return view('admin.doctors.edit', [

@@ -7,7 +7,7 @@
     <div class="container-xxl">
         <div class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column">
             <div>
-                © {{ date('Y') }} , {{ trans('admin.Created & Developed by') }} <a
+                 {{ date('Y') }} &copy; {{ settings()->name }} , {{ trans('admin.Created & Developed by') }} <a
                     href="https://www.linkedin.com/in/engmohsenit" target="_blank" class="fw-medium">Ahmed Mohsen</a>
             </div>
 
@@ -66,6 +66,12 @@
             localStorage.setItem('templateCustomizer-vertical-menu-template--Rtl', true);
             window.location.href = "{{ aurl('settings/language/ar') }}";
         })
+        $("#mobile").on("input", function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 11) {
+                this.value = this.value.slice(0, 11);
+            }
+        });
     });
 </script>
 

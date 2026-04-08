@@ -22,7 +22,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = User::whereHasRole('admin')->with('profile')->where('id', '!=', '1')->latest()->paginate(30);
+        $admins = User::with('profile','roles')->latest()->paginate(50);
         return view('admin.admins.index', [
             'title' => trans('admin.All Admins'),
             'admins' => $admins
@@ -69,8 +69,10 @@ class AdminController extends Controller
      */
     public function create()
     {
+        $roles = Role::where('name', '!=', 'super_admin')->where('name', '!=', 'dentry')->get();
         return view('admin.admins.create', [
             'title' => trans('admin.Add New Admin'),
+            'roles' => $roles
         ]);
     }
 
@@ -98,7 +100,9 @@ class AdminController extends Controller
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);
         $user->save();
-        $user->addRole('admin');
+
+        $role = Role::find($request->role_id);
+        $user->addRole($role);
 
         if ($request->hasFile('image')) {
             ini_set('memory_limit', '-1');
@@ -141,9 +145,11 @@ class AdminController extends Controller
     public function edit($id)
     {
         $admin = User::where('id', $id)->with('profile')->first();
+        $roles = Role::where('name', '!=', 'super_admin')->where('name', '!=', 'dentry')->get();
         return view('admin.admins.edit', [
             'title' => $admin->name,
             'admin' => $admin,
+            'roles' => $roles
         ]);
     }
 
@@ -171,6 +177,9 @@ class AdminController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->save();
+
+        $role = Role::find($request->role_id);
+        $user->syncRoles([$role->name]);
 
         if ($request->hasFile('image')) {
             ini_set('memory_limit', '-1');

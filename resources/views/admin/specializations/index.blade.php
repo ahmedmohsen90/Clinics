@@ -4,9 +4,11 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('specializations/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Specialization') }}</a>
+                    @ability('super_admin', 'specializations-create')
+                        <a href="{{ aurl('specializations/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Specialization') }}</a>
+                    @endability
                 </h5>
             </div>
             <div class="card-block row">
@@ -28,16 +30,20 @@
                                         <td>{{ number_format($specialization->price, 2) }}</td>
                                         <td>{{ $specialization->doctors_count }}</td>
                                         <td>
-                                            <a href="{{ aurl('specializations/edit/' . $specialization->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
+                                            @ability('super_admin', 'specializations-update')
+                                                <a href="{{ aurl('specializations/edit/' . $specialization->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'specializations-delete')
+                                                <button data-id="{{ $specialization->id }}"
+                                                    data-name="{{ $specialization->name }}" id="delete"
+                                                    class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
 
-                                            <button data-id="{{ $specialization->id }}"
-                                                data-name="{{ $specialization->name }}" id="delete"
-                                                class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                    class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach

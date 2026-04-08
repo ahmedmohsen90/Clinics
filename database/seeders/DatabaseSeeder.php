@@ -72,5 +72,9 @@ class DatabaseSeeder extends Seeder
             'name_ar' => "عناية",
             'name_en' => "MediCare Clinics"
         ]);
+
+        $this->call([
+            PermissionSeeder::class,
+        ]);
     }
 }

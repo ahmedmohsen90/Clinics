@@ -1,16 +1,34 @@
 @extends('admin.layouts.app')
 @section('content')
-
     <div class="col-xl-12 col-md-12">
         <div class="card">
             <div class="card-header">
-                <h5>{{ $title }}
-                    @ability('super_admin', 'cases-create')
-                        <a href="{{ aurl('cases/create') }}"
-                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                            {{ trans('admin.Add New Case') }}</a>
-                    @endability
-                </h5>
+                <h5>{{ trans('admin.Actions') }}</h5>
+            </div>
+            <div class="card-body row">
+                <div class="d-grid gap-2 col-lg-4 mx-auto">
+                    <a style="padding: 30px;" href="{{ url('customers/create') }}"
+                        class="btn btn-xl btn-primary waves-effect waves-light"><i class="fas fa-users"></i>
+                        &nbsp;{{ trans('admin.Add New Customer') }}</a>
+                </div>
+                <div class="d-grid gap-2 col-lg-4 mx-auto">
+                    <a style="padding: 30px;" href="{{ url('cases/create') }}"
+                        class="btn btn-xl btn-success waves-effect waves-light"><i class="fas fa-user-injured"></i>
+                        &nbsp;{{ trans('admin.Add New Case') }}</a>
+                </div>
+                <div class="d-grid gap-2 col-lg-4 mx-auto">
+                    <a style="padding: 30px;" href="{{ url('reservations/create') }}"
+                        class="btn btn-xl btn-warning waves-effect waves-light"><i class="fas fa-calendar-alt"></i>
+                        &nbsp;{{ trans('admin.Add New Reservation') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="col-xl-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-user-injured"></i> {{ trans('admin.Cases') }} - {{ date('Y-m-d') }}</h5>
             </div>
             <div class="card-block row">
                 <div class="col-sm-12 col-lg-12 col-xl-12">
@@ -93,38 +111,31 @@
                                                     {{ trans('admin.Actions') }}
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    @ability('super_admin', 'cases-view')
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ aurl('cases/view/' . $case->id) }}"><i
-                                                                    class="fas fa-eye"></i>
-                                                                {{ trans('admin.Details') }}</a>
-                                                        </li>
-                                                    @endability
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ aurl('cases/view/' . $case->id) }}"><i
+                                                                class="fas fa-eye"></i>
+                                                            {{ trans('admin.Details') }}</a>
+                                                    </li>
                                                     <li>
                                                         <hr class="dropdown-divider" />
                                                     </li>
-                                                    @ability('super_admin', 'cases-update')
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ aurl('cases/edit/' . $case->id) }}"><i
-                                                                    class="fas fa-edit"></i>
-                                                                {{ trans('admin.Edit') }}</a>
-                                                        </li>
-                                                    @endability
-                                                    @ability('super_admin', 'cases-delete')
-                                                        <li>
-                                                            <hr class="dropdown-divider" />
-                                                        </li>
-                                                        <li>
-                                                            <a data-id="{{ $case->id }}"
-                                                                data-name="{{ $case->customer->name }}" id="delete"
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="fas fa-trash"></i>
-                                                                {{ trans('admin.Delete') }}</a>
-                                                        </li>
-                                                    @endability
-
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ aurl('cases/edit/' . $case->id) }}"><i
+                                                                class="fas fa-edit"></i>
+                                                            {{ trans('admin.Edit') }}</a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider" />
+                                                    </li>
+                                                    <li>
+                                                        <a data-id="{{ $case->id }}"
+                                                            data-name="{{ $case->customer->name }}" id="delete"
+                                                            class="dropdown-item" href="#"><i
+                                                                class="fas fa-trash"></i>
+                                                            {{ trans('admin.Delete') }}</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -132,52 +143,65 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $cases->links('admin.pagination.index') }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br>
 
-    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tooltipmodal" aria-hidden="true"
-        id="deleteModal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Delete') }}</h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+
+    <div class="col-xl-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-calendar-alt"></i> {{ trans('admin.Reservations') }} - {{ date('Y-m-d') }}</h5>
+            </div>
+            <div class="card-block row">
+                <div class="col-sm-12 col-lg-12 col-xl-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{ trans('admin.Name') }}</th>
+                                    <th>{{ trans('admin.Mobile') }}</th>
+                                    <th>{{ trans('admin.Specialization') }}</th>
+                                    <th>{{ trans('admin.Doctor') }}</th>
+                                    <th>{{ trans('admin.Date') }}</th>
+                                    <th>{{ trans('admin.Actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($reservations as $reservation)
+                                    <tr>
+                                        <td>{{ $reservation->customer->name }}</td>
+                                        <td>{{ $reservation->customer->mobile }}</td>
+                                        <td>{{ $reservation->specialization->name }}</td>
+                                        <td>{{ $reservation->doctor->name }}</td>
+                                        <td><i class="fas fa-calendar-alt"></i> {{ $reservation->date }} <br>
+                                            <i class="fas fa-clock"></i>
+                                            {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->time)->format('g:ia') }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ aurl('reservations/view/' . $reservation->id) }}"
+                                                class="btn btn-pill btn-outline-primary btn-air-primary"><i
+                                                    class="fas fa-eye"></i>
+                                                {{ trans('admin.Details') }}</a>
+                                            <a href="{{ aurl('reservations/edit/' . $reservation->id) }}"
+                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                    class="fas fa-edit"></i>
+                                                {{ trans('admin.Edit') }}</a>
+                                            <button data-id="{{ $reservation->id }}" data-name="{{ $reservation->name }}"
+                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                    class="fas fa-trash"></i>
+                                                {{ trans('admin.Delete') }}</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <form action="{{ aurl('cases/delete') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="col-md-12 text-center">
-                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="caseName"></p>
-                        </div>
-                        <input type="hidden" id="case_id" name="case_id" value="">
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
-                            {{ trans('admin.Close') }}</button>
-                        <button type="submit"
-                            class="btn btn-pill btn-outline-danger btn-air-danger">{{ trans('admin.Delete') }}</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
-
-    @push('script')
-        <script>
-            $(document).ready(function() {
-                $("#delete ").click(function() {
-                    var caseName = $(this).attr('data-name');
-                    var caseId = $(this).attr('data-id');
-                    $("#caseName").text(caseName);
-                    $("#case_id").val(caseId);
-                    $("#deleteModal").modal('show');
-                });
-
-            });
-        </script>
-    @endpush
 @endsection

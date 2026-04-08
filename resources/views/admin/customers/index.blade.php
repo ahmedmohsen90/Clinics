@@ -4,9 +4,12 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('customers/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Customer') }}</a>
+                    @ability('super_admin', 'customers-create')
+                        <a href="{{ aurl('customers/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Customer') }}</a>
+                    @endability
+
                 </h5>
             </div>
             <div class="card-block row">
@@ -32,27 +35,34 @@
                                         <td>{{ $customer->age }}</td>
                                         <td>
                                             @if (isset($customer->company->company))
-                                                <span class="badge text-bg-success">{{ $customer->company->company->name }}</span>
+                                                <span
+                                                    class="badge text-bg-success">{{ $customer->company->company->name }}</span>
                                             @else
-                                                <span class="badge text-bg-danger">{{ trans('admin.Does not belong') }}</span>
+                                                <span
+                                                    class="badge text-bg-danger">{{ trans('admin.Does not belong') }}</span>
                                             @endif
                                         </td>
 
                                         <td>
-                                            <a href="{{ aurl('customers/view/' . $customer->id) }}"
-                                                class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                    class="fas fa-eye"></i>
-                                                {{ trans('admin.View') }}</a>
+                                            @ability('super_admin', 'customers-view')
+                                                <a href="{{ aurl('customers/view/' . $customer->id) }}"
+                                                    class="btn btn-pill btn-outline-primary btn-air-primary"><i
+                                                        class="fas fa-eye"></i>
+                                                    {{ trans('admin.Details') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'customers-update')
+                                                <a href="{{ aurl('customers/edit/' . $customer->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'customers-delete')
+                                                <button data-id="{{ $customer->id }}" data-name="{{ $customer->name }}"
+                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
 
-                                            <a href="{{ aurl('customers/edit/' . $customer->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
-
-                                            <button data-id="{{ $customer->id }}" data-name="{{ $customer->name }}"
-                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                    class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach

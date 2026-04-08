@@ -9,6 +9,7 @@ use App\Models\Doctor;
 use App\Models\Reservation;
 use App\Models\Specialization;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -23,58 +24,63 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $casestoday = DB::table('customer_cases')->select('id')->whereDate('created_at', date('Y-m-d'))->count();
-        $casesweek = DB::table('customer_cases')->select('id')->whereBetween('created_at', [Carbon::today()->startOfWeek(), Carbon::today()->endOfWeek()])->count();
-        $casesmonth = DB::table('customer_cases')->select('id')->whereBetween('created_at', [Carbon::today()->startOfMonth(), Carbon::today()->endOfMonth()])->count();
-        $casesAll = DB::table('customer_cases')->select('id')->count();
+        if (Auth::user()->hasRole('dentry')) {
+            return $this->dentry();
+        } else {
 
-        $doctors = Doctor::count();
-        $specializations = Specialization::count();
-        $customers = Customer::count();
-        $reservations = Reservation::count();
-        $reservationsToday = Reservation::whereDate('date', Carbon::today())->count();
+            $casestoday = DB::table('customer_cases')->select('id')->whereDate('created_at', date('Y-m-d'))->count();
+            $casesweek = DB::table('customer_cases')->select('id')->whereBetween('created_at', [Carbon::today()->startOfWeek(), Carbon::today()->endOfWeek()])->count();
+            $casesmonth = DB::table('customer_cases')->select('id')->whereBetween('created_at', [Carbon::today()->startOfMonth(), Carbon::today()->endOfMonth()])->count();
+            $casesAll = DB::table('customer_cases')->select('id')->count();
 
-        $ordersSum = CustomerCase::whereYear('created_at', date('Y'))
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->created_at->month;
-            })->map(function ($item) {
-                return $item->sum('amount');
-            });
+            $doctors = Doctor::count();
+            $specializations = Specialization::count();
+            $customers = Customer::count();
+            $reservations = Reservation::count();
+            $reservationsToday = Reservation::whereDate('date', Carbon::today())->count();
 
-        $ordersChart = DB::table('customer_cases')->whereYear('created_at', date('Y'))->get()
-            ->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('m'); // grouping by months
-            });
+            $ordersSum = CustomerCase::whereYear('created_at', date('Y'))
+                ->get()
+                ->groupBy(function ($item) {
+                    return $item->created_at->month;
+                })->map(function ($item) {
+                    return $item->sum('amount');
+                });
 
-        $ordermcount = [];
-        $orderArr = [];
-        foreach ($ordersChart as $key => $value) {
-            $ordermcount[(int)$key] = count($value);
-        }
-        for ($i = 1; $i <= 12; $i++) {
-            if (!empty($ordermcount[$i])) {
-                $orderArr[$i] = $ordermcount[$i];
-            } else {
-                $orderArr[$i] = 0;
+            $ordersChart = DB::table('customer_cases')->whereYear('created_at', date('Y'))->get()
+                ->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('m'); // grouping by months
+                });
+
+            $ordermcount = [];
+            $orderArr = [];
+            foreach ($ordersChart as $key => $value) {
+                $ordermcount[(int)$key] = count($value);
             }
-        }
+            for ($i = 1; $i <= 12; $i++) {
+                if (!empty($ordermcount[$i])) {
+                    $orderArr[$i] = $ordermcount[$i];
+                } else {
+                    $orderArr[$i] = 0;
+                }
+            }
 
-        return view('admin.dashboard.index', [
-            'title' => trans('admin.Dashboard'),
-            'ordermcount' => $ordermcount,
-            'orderArr' => $orderArr,
-            'doctors' => $doctors,
-            'specializations' => $specializations,
-            'customers' => $customers,
-            'reservations' => $reservations,
-            'reservationsToday' => $reservationsToday,
-            'casestoday' => $casestoday,
-            'casesweek' => $casesweek,
-            'casesmonth' => $casesmonth,
-            'casesAll' => $casesAll,
-            'ordersSum' => $ordersSum,
-        ]);
+            return view('admin.dashboard.index', [
+                'title' => trans('admin.Dashboard'),
+                'ordermcount' => $ordermcount,
+                'orderArr' => $orderArr,
+                'doctors' => $doctors,
+                'specializations' => $specializations,
+                'customers' => $customers,
+                'reservations' => $reservations,
+                'reservationsToday' => $reservationsToday,
+                'casestoday' => $casestoday,
+                'casesweek' => $casesweek,
+                'casesmonth' => $casesmonth,
+                'casesAll' => $casesAll,
+                'ordersSum' => $ordersSum,
+            ]);
+        }
     }
 
     private function reportTotal($from = null, $to = null)
@@ -89,5 +95,17 @@ class DashboardController extends Controller
             SUM(CASE WHEN operation = 'plus' THEN amount ELSE 0 END) -
             SUM(CASE WHEN operation = 'minus' THEN amount ELSE 0 END)
         ")->value('total');
+    }
+
+    private function dentry()
+    {
+        $cases = CustomerCase::with('customer', 'specialization', 'doctor')->whereDate('created_at', date('Y-m-d'))->get();
+        $reservations = Reservation::with('customer', 'specialization', 'doctor')->whereDate('created_at', date('Y-m-d'))->get();
+
+        return view('admin.dashboard.dentry', [
+            'title' => trans('admin.Dashboard'),
+            'cases' => $cases,
+            'reservations'=>$reservations
+        ]);
     }
 }

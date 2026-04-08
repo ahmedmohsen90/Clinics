@@ -4,9 +4,12 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('data_entries/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Data Entry') }}</a>
+                    @ability('super_admin', 'data_entries-create')
+                        <a href="{{ aurl('data_entries/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Data Entry') }}</a>
+                    @endability
+
                 </h5>
             </div>
             <div class="card-block row">
@@ -26,15 +29,19 @@
                                         <td>{{ $data_entry->name }}</td>
                                         <td>{{ $data_entry->mobile }}</td>
                                         <td>
-                                            <a href="{{ aurl('data_entries/edit/' . $data_entry->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
+                                            @ability('super_admin', 'data_entries-update')
+                                                <a href="{{ aurl('data_entries/edit/' . $data_entry->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'data_entries-delete')
+                                                <button data-id="{{ $data_entry->id }}" data-name="{{ $data_entry->name }}"
+                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
 
-                                            <button data-id="{{ $data_entry->id }}" data-name="{{ $data_entry->name }}"
-                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                    class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach

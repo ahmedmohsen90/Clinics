@@ -11,6 +11,15 @@
                 @csrf
                 <div class="card-body">
                     <div class="mb-3">
+                        <label class="floating-label" for="role_id">{{ trans('admin.Role') }} <span
+                                class="redStar">*</span></label>
+                        <select name="role_id" class="form-control" id="role_id">
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label class="floating-label" for="name">{{ trans('admin.Name') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="name" value="{{ $admin->name }}" class="form-control"

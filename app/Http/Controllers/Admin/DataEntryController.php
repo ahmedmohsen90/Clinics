@@ -31,7 +31,7 @@ class DataEntryController extends Controller
 
         return view('admin.data_entries.create', [
             'title' => trans('admin.Add New Data Entry'),
-            'branches'=>$branches
+            'branches' => $branches
         ]);
     }
 
@@ -93,7 +93,7 @@ class DataEntryController extends Controller
         $request->validate([
             'name'          => 'required',
             'mobile'        => 'required|min:8|unique:users',
-            'password'      => 'required|min:6',
+            'password'      => 'nullable|min:6',
         ], [], [
             'name'          => trans('admin.Name'),
             'mobile'        => trans('admin.Mobile'),
@@ -103,7 +103,9 @@ class DataEntryController extends Controller
         $dentry = User::where('id', $id)->first();
         $dentry->name = $request->name;
         $dentry->mobile = $request->mobile;
-        $dentry->password = Hash::make($request->password);
+        if ($request->password) {
+            $dentry->password = Hash::make($request->password);
+        }
         $dentry->save();
 
         userLogs([

@@ -39,11 +39,14 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    @if ($entitlements > 0)
-                        <button id="collection" class="btn btn-pill btn-outline-success btn-air-success pull-right"><i
-                                class="fas fa-plus"></i>
-                            {{ trans('admin.Collection') }}</button>
-                    @endif
+                    @ability('super_admin', 'debts-collection')
+                        @if ($entitlements > 0)
+                            <button id="collection" class="btn btn-pill btn-outline-success btn-air-success pull-right"><i
+                                    class="fas fa-plus"></i>
+                                {{ trans('admin.Collection') }}</button>
+                        @endif
+                    @endability
+
                 </h5>
             </div>
             <div class="card-block row">
@@ -108,8 +111,8 @@
                             <input type="text" name="description" value="" class="form-control" id="description">
                         </div>
                         <div class="mb-3">
-                            <label class="floating-label" for="payment_method_id">{{ trans('admin.Receiving Process') }} <span
-                                    class="redStar">*</span></label>
+                            <label class="floating-label" for="payment_method_id">{{ trans('admin.Receiving Process') }}
+                                <span class="redStar">*</span></label>
                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                 @foreach ($paymentMethods as $method)
                                     <option value="{{ $method->id }}">{{ $method->name }}</option>

@@ -4,9 +4,11 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('payment_methods/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Payment Method') }}</a>
+                    @ability('super_admin', 'payment_methods-create')
+                        <a href="{{ aurl('payment_methods/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Payment Method') }}</a>
+                    @endability
                 </h5>
             </div>
             <div class="card-block row">
@@ -32,28 +34,30 @@
                                             @endif
                                         </td>
                                         <td>
+                                            @ability('super_admin', 'payment_methods-financials')
+                                                <a href="{{ aurl('payment_methods/financials/' . $method->id) }}"
+                                                    class="btn btn-pill btn-outline-primary btn-air-primary">
+                                                    <i class="fas fa-money-check"></i>&nbsp;{{ trans('admin.Financials') }}
+                                                </a>
+                                            @endability
+                                            @ability('super_admin', 'payment_methods-update')
+                                                <a href="{{ aurl('payment_methods/edit/' . $method->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                                @if ($method->status == 1)
+                                                    <a href="{{ aurl('payment_methods/status/0/' . $method->id) }}"
+                                                        class="btn btn-pill btn-outline-info btn-air-info"><i
+                                                            class="fas fa-times"></i>
+                                                        &nbsp;{{ trans('admin.Stop') }}</a>
+                                                @else
+                                                    <a href="{{ aurl('payment_methods/status/1/' . $method->id) }}"
+                                                        class="btn btn-pill btn-outline-success btn-air-success"><i
+                                                            class="fas fa-check"></i>
+                                                        &nbsp;{{ trans('admin.Start') }}</a>
+                                                @endif
+                                            @endability
 
-                                            <a href="{{ aurl('payment_methods/financials/' . $method->id) }}"
-                                                class="btn btn-pill btn-outline-primary btn-air-primary">
-                                                <i class="fas fa-money-check"></i>&nbsp;{{ trans('admin.Financials') }}
-                                            </a>
-
-                                            <a href="{{ aurl('payment_methods/edit/' . $method->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
-
-                                            @if ($method->status == 1)
-                                                <a href="{{ aurl('payment_methods/status/0/' . $method->id) }}"
-                                                    class="btn btn-pill btn-outline-info btn-air-info"><i
-                                                        class="fas fa-times"></i>
-                                                    &nbsp;{{ trans('admin.Stop') }}</a>
-                                            @else
-                                                <a href="{{ aurl('payment_methods/status/1/' . $method->id) }}"
-                                                    class="btn btn-pill btn-outline-success btn-air-success"><i
-                                                        class="fas fa-check"></i>
-                                                    &nbsp;{{ trans('admin.Start') }}</a>
-                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

@@ -4,9 +4,11 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('reservations/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Reservation') }}</a>
+                    @ability('super_admin', 'reservations-create')
+                        <a href="{{ aurl('reservations/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Reservation') }}</a>
+                    @endability
                 </h5>
             </div>
             <div class="card-block row">
@@ -31,24 +33,30 @@
                                         <td>{{ $reservation->specialization->name }}</td>
                                         <td>{{ $reservation->doctor->name }}</td>
                                         <td><i class="fas fa-calendar-alt"></i> {{ $reservation->date }} <br>
-                                            <i class="fas fa-clock"></i> {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->time)->format('g:ia') }}
+                                            <i class="fas fa-clock"></i>
+                                            {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->time)->format('g:ia') }}
                                         </td>
 
                                         <td>
-                                            <a href="{{ aurl('reservations/view/' . $reservation->id) }}"
-                                                class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                    class="fas fa-eye"></i>
-                                                {{ trans('admin.Details') }}</a>
+                                            @ability('super_admin', 'reservations-view')
+                                                <a href="{{ aurl('reservations/view/' . $reservation->id) }}"
+                                                    class="btn btn-pill btn-outline-primary btn-air-primary"><i
+                                                        class="fas fa-eye"></i>
+                                                    {{ trans('admin.Details') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'reservations-update')
+                                                <a href="{{ aurl('reservations/edit/' . $reservation->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'reservations-delete')
+                                                <button data-id="{{ $reservation->id }}" data-name="{{ $reservation->name }}"
+                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
 
-                                            <a href="{{ aurl('reservations/edit/' . $reservation->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
-
-                                            <button data-id="{{ $reservation->id }}" data-name="{{ $reservation->name }}"
-                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                    class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach

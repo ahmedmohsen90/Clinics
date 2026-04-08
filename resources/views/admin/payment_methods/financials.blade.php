@@ -30,8 +30,10 @@
                                 class="far fa-file-excel"></i></a>&nbsp;
                         <a class="btn btn-pill btn-outline-danger btn-air-danger pull-right" href="#"><i
                                 class="fas fa-file-pdf"></i></a>
-                        <button id="transfer" class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i
-                                class="fas fa-exchange-alt"></i> {{ trans('admin.Transfer') }}</a>
+                        @ability('super_admin', 'payment_methods-transfer')
+                            <button id="transfer" class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i
+                                    class="fas fa-exchange-alt"></i> {{ trans('admin.Transfer') }}</button>
+                        @endability
                     @endif
 
                 </h5>

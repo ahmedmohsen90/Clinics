@@ -4,11 +4,9 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    @ability('super_admin', 'expenses-create')
-                        <a href="{{ aurl('expenses/create') }}"
-                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                            {{ trans('admin.Add New Expense') }}</a>
-                    @endability
+                    <a href="{{ aurl('roles/create') }}"
+                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                        {{ trans('admin.Add New Role') }}</a>
                 </h5>
             </div>
             <div class="card-block row">
@@ -17,36 +15,33 @@
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>{{ trans('admin.Amount') }}</th>
+                                    <th>{{ trans('admin.Role') }}</th>
+                                    <th>{{ trans('admin.Name') }}</th>
+                                    <th>{{ trans('admin.Admins Count') }}</th>
                                     <th>{{ trans('admin.Description') }}</th>
+                                    <th>{{ trans('admin.Created At') }}</th>
                                     <th>{{ trans('admin.Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($expenses as $expense)
+                                @foreach ($roles as $role)
                                     <tr>
-                                        <td>{{ number_format($expense->amount, 2) }}</td>
-                                        <td>{{ $expense->description }}</td>
+                                        <td>{{ $role->name }}</td>
+                                        <td>{{ $role->display_name }}</td>
+                                        <td>{{ $role->admins_count }}</td>
+                                        <td data-toggle="tooltip" title="{{ $role->description }}">
+                                            {{ Str::limit($role->description, 35) }}</td>
+                                        <td>{{ $role->created_at }}</td>
                                         <td>
-                                            @ability('super_admin', 'expenses-update')
-                                                <a href="{{ aurl('expenses/edit/' . $expense->id) }}"
-                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                        class="fas fa-edit"></i>
-                                                    {{ trans('admin.Edit') }}</a>
-                                            @endability
-                                            @ability('super_admin', 'expenses-delete')
-                                                <button data-id="{{ $expense->id }}" data-name="{{ $expense->name }}"
-                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                        class="fas fa-trash"></i>
-                                                    {{ trans('admin.Delete') }}</button>
-                                            @endability
-
+                                            <a href="{{ aurl('roles/edit/' . $role->id) }}"
+                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                    class="fas fa-edit"></i>
+                                                {{ trans('admin.Edit') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $expenses->links('admin.pagination.index') }}
                     </div>
                 </div>
             </div>
@@ -61,13 +56,13 @@
                     <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Delete') }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ aurl('expenses/delete') }}" method="POST">
+                <form action="{{ aurl('roles/delete') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="col-md-12 text-center">
-                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="expenseName"></p>
+                            <p style="margin-top: 10px;font-size: x-large" class="text-info" id="roleName"></p>
                         </div>
-                        <input type="hidden" id="expense_id" name="expense_id" value="">
+                        <input type="hidden" id="role_id" name="role_id" value="">
                     </div>
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
@@ -84,10 +79,10 @@
         <script>
             $(document).ready(function() {
                 $("#delete ").click(function() {
-                    var expenseName = $(this).attr('data-name');
-                    var expenseId = $(this).attr('data-id');
-                    $("#expenseName").text(expenseName);
-                    $("#expense_id").val(expenseId);
+                    var roleName = $(this).attr('data-name');
+                    var roleId = $(this).attr('data-id');
+                    $("#roleName").text(roleName);
+                    $("#role_id").val(roleId);
                     $("#deleteModal").modal('show');
                 });
 

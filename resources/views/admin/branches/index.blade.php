@@ -4,9 +4,11 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('branches/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Branch') }}</a>
+                    @ability('super_admin', 'branches-create')
+                        <a href="{{ aurl('branches/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Branch') }}</a>
+                    @endability
                 </h5>
             </div>
             <div class="card-block row">
@@ -24,15 +26,18 @@
                                     <tr>
                                         <td>{{ $branche->name }}</td>
                                         <td>
-                                            <a href="{{ aurl('branches/edit/' . $branche->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
-
-                                            <button data-id="{{ $branche->id }}" data-name="{{ $branche->name }}"
-                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                    class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
+                                            @ability('super_admin', 'branches-update')
+                                                <a href="{{ aurl('branches/edit/' . $branche->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'branches-delete')
+                                                <button data-id="{{ $branche->id }}" data-name="{{ $branche->name }}"
+                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
                                         </td>
                                     </tr>
                                 @endforeach

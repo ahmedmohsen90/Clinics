@@ -3,9 +3,13 @@
     <div class="col-xl-12 col-md-12">
         <div class="card">
             <div class="card-header">
-                <h5>{{ $title }}<a href="{{ aurl('admins/create') }}" class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i
-                            class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Admin') }}</a></h5>
+                <h5>{{ $title }}
+                    @ability('super_admin', 'admins-create')
+                        <a href="{{ aurl('admins/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Admin') }}</a>
+                    @endability
+                </h5>
             </div>
             <div class="card-block row">
                 <div class="col-sm-12 col-lg-12 col-xl-12">
@@ -15,26 +19,49 @@
                                 <tr>
                                     <th>{{ trans('admin.Name') }}</th>
                                     <th>{{ trans('admin.Mobile') }}</th>
+                                    @role('super_admin')
+                                        <th>{{ trans('admin.Role') }}</th>
+                                    @endrole
                                     <th>{{ trans('admin.Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($admins as $admin)
+                                    @if ($admin->hasRole('super_admin') || $admin->hasRole('dentry'))
+                                        @continue
+                                    @endif
                                     <tr>
                                         <td>{{ $admin->name }}</td>
                                         <td>{{ $admin->mobile }}</td>
+                                        @role('super_admin')
+                                            <td>
+                                                @foreach ($admin->roles as $role)
+                                                    <span
+                                                        class="badge bg-primary">{{ $role->display_name ?? $role->name }}</span>
+                                                @endforeach
+                                            </td>
+                                        @endrole
                                         <td>
-                                            <a href="{{ aurl('admins/logs/' . $admin->id) }}" class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                    class="fas fa-chart-line"></i>
-                                                {{ trans('admin.Activity') }}</a>
+                                            @ability('super_admin', 'admins-logs')
+                                                <a href="{{ aurl('admins/logs/' . $admin->id) }}"
+                                                    class="btn btn-pill btn-outline-primary btn-air-primary"><i
+                                                        class="fas fa-chart-line"></i>
+                                                    {{ trans('admin.Activity') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'admins-update')
+                                                <a href="{{ aurl('admins/edit/' . $admin->id) }}"
+                                                    class="btn btn-pill btn-outline-success btn-air-success"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
 
-                                            <a href="{{ aurl('admins/edit/' . $admin->id) }}" class="btn btn-pill btn-outline-success btn-air-success"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
+                                            @ability('super_admin', 'admins-delete')
+                                                <button data-id="{{ $admin->id }}" data-name="{{ $admin->name }}"
+                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
 
-                                            <button data-id="{{ $admin->id }}" data-name="{{ $admin->name }}"
-                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -66,7 +93,8 @@
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
                             {{ trans('admin.Close') }}</button>
-                        <button type="submit" class="btn btn-pill btn-outline-danger btn-air-danger">{{ trans('admin.Delete') }}</button>
+                        <button type="submit"
+                            class="btn btn-pill btn-outline-danger btn-air-danger">{{ trans('admin.Delete') }}</button>
                     </div>
                 </form>
             </div>

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Admin\InsuranceCompanyController;
 use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Middleware\Lang;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,16 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('', [SettingController::class, 'update']);
             Route::get('about', [SettingController::class, 'about']);
             Route::post('update', [SettingController::class, 'update']);
+        });
+
+        Route::group(['prefix' => 'roles'], function () {
+            Route::get('', [RoleController::class, 'index']);
+            Route::get('create', [RoleController::class, 'create']);
+            Route::post('create', [RoleController::class, 'store']);
+            Route::get('view/{id}', [RoleController::class, 'show']);
+            Route::get('edit/{id}', [RoleController::class, 'edit']);
+            Route::post('update/{id}', [RoleController::class, 'update']);
+            Route::post('delete', [RoleController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'admins'], function () {
@@ -89,6 +100,7 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('', [DoctorController::class, 'index']);
             Route::get('create', [DoctorController::class, 'create']);
             Route::get('edit/{id}', [DoctorController::class, 'edit']);
+            Route::get('view/{id}', [DoctorController::class, 'show']);
             Route::get('by_specialization/{id}', [DoctorController::class, 'by_specialization']);
             Route::post('create', [DoctorController::class, 'store']);
             Route::post('update/{id}', [DoctorController::class, 'update']);
@@ -184,6 +196,5 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('update/{id}', [PaymentMethodController::class, 'update']);
             Route::post('delete', [PaymentMethodController::class, 'destroy']);
         });
-
     });
 });

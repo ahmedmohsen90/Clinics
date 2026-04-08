@@ -29,305 +29,374 @@
             <span class="menu-header-text">{{ trans('admin.Reports') }}</span>
         </li>
 
-        <li class="menu-item {{ openMenu('reservations') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Reservations') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('reservations') }}">
-                    <a href="{{ aurl('reservations') }}" class="menu-link">
-                        <div>{{ trans('admin.All Reservations') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('reservations/create') }}">
-                    <a href="{{ aurl('reservations/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Reservation') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'reservations-index')
+            <li class="menu-item {{ openMenu('reservations') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Reservations') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('reservations') }}">
+                        <a href="{{ aurl('reservations') }}" class="menu-link">
+                            <div>{{ trans('admin.All Reservations') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'reservations-create')
+                        <li class="menu-item {{ activeMenu('reservations/create') }}">
+                            <a href="{{ aurl('reservations/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Reservation') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('cases') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-user-injured"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Cases') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('cases') }}">
-                    <a href="{{ aurl('cases') }}" class="menu-link">
-                        <div>{{ trans('admin.All Cases') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('cases/create') }}">
-                    <a href="{{ aurl('cases/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Case') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'cases-index')
+            <li class="menu-item {{ openMenu('cases') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-user-injured"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Cases') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('cases') }}">
+                        <a href="{{ aurl('cases') }}" class="menu-link">
+                            <div>{{ trans('admin.All Cases') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'cases-create')
+                        <li class="menu-item {{ activeMenu('cases/create') }}">
+                            <a href="{{ aurl('cases/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Case') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('reports') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-chart-bar"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Reports') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('reports/today') }}">
-                    <a href="{{ aurl('reports/today') }}" class="menu-link">
-                        <div>{{ trans('admin.Reports Today') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('reports/week') }}">
-                    <a href="{{ aurl('reports/week') }}" class="menu-link">
-                        <div>{{ trans('admin.Reports Week') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('reports/month') }}">
-                    <a href="{{ aurl('reports/month') }}" class="menu-link">
-                        <div>{{ trans('admin.Reports Month') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('reports/all') }}">
-                    <a href="{{ aurl('reports/all') }}" class="menu-link">
-                        <div>{{ trans('admin.All Reports') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'reports-index')
+            <li class="menu-item {{ openMenu('reports') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-chart-bar"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Reports') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('reports/today') }}">
+                        <a href="{{ aurl('reports/today') }}" class="menu-link">
+                            <div>{{ trans('admin.Reports Today') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ activeMenu('reports/week') }}">
+                        <a href="{{ aurl('reports/week') }}" class="menu-link">
+                            <div>{{ trans('admin.Reports Week') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ activeMenu('reports/month') }}">
+                        <a href="{{ aurl('reports/month') }}" class="menu-link">
+                            <div>{{ trans('admin.Reports Month') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ activeMenu('reports/all') }}">
+                        <a href="{{ aurl('reports/all') }}" class="menu-link">
+                            <div>{{ trans('admin.All Reports') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endability
 
         <!-- Apps & Pages -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ trans('admin.Content') }}</span>
         </li>
 
-        <li class="menu-item {{ openMenu('admins') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-user-secret"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Admins') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('admins') }}">
-                    <a href="{{ aurl('admins') }}" class="menu-link">
-                        <div>{{ trans('admin.All Admins') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('admins/create') }}">
-                    <a href="{{ aurl('admins/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Admin') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @role('super_admin')
+            <li class="menu-item {{ openMenu('roles') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-lock"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Roles') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('roles') }}">
+                        <a href="{{ aurl('roles') }}" class="menu-link">
+                            <div>{{ trans('admin.All Roles') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ activeMenu('roles/create') }}">
+                        <a href="{{ aurl('roles/create') }}" class="menu-link">
+                            <div>{{ trans('admin.Add New Role') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endrole
 
-        <li class="menu-item {{ openMenu('branches') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-code-branch"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Branches') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('branches') }}">
-                    <a href="{{ aurl('branches') }}" class="menu-link">
-                        <div>{{ trans('admin.All Branches') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('branches/create') }}">
-                    <a href="{{ aurl('branches/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Branch') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'admins-index')
+            <li class="menu-item {{ openMenu('admins') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-user-secret"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Admins') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('admins') }}">
+                        <a href="{{ aurl('admins') }}" class="menu-link">
+                            <div>{{ trans('admin.All Admins') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'admins-create')
+                        <li class="menu-item {{ activeMenu('admins/create') }}">
+                            <a href="{{ aurl('admins/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Admin') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('data_entries') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-user-edit"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Data Entries') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('data_entries') }}">
-                    <a href="{{ aurl('data_entries') }}" class="menu-link">
-                        <div>{{ trans('admin.All Data Entries') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('data_entries/create') }}">
-                    <a href="{{ aurl('data_entries/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Data Entry') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'branches-index')
+            <li class="menu-item {{ openMenu('branches') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-code-branch"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Branches') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('branches') }}">
+                        <a href="{{ aurl('branches') }}" class="menu-link">
+                            <div>{{ trans('admin.All Branches') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'branches-create')
+                        <li class="menu-item {{ activeMenu('branches/create') }}">
+                            <a href="{{ aurl('branches/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Branch') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('specializations') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-clinic-medical"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Specializations') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('specializations') }}">
-                    <a href="{{ aurl('specializations') }}" class="menu-link">
-                        <div>{{ trans('admin.All Specializations') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('specializations/create') }}">
-                    <a href="{{ aurl('specializations/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Specialization') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'data_entries-index')
+            <li class="menu-item {{ openMenu('data_entries') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-user-edit"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Data Entries') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('data_entries') }}">
+                        <a href="{{ aurl('data_entries') }}" class="menu-link">
+                            <div>{{ trans('admin.All Data Entries') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'data_entries-create')
+                        <li class="menu-item {{ activeMenu('data_entries/create') }}">
+                            <a href="{{ aurl('data_entries/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Data Entry') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('insurance_companies') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-building"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Insurance Companies') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('insurance_companies') }}">
-                    <a href="{{ aurl('insurance_companies') }}" class="menu-link">
-                        <div>{{ trans('admin.All Companies') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('insurance_companies/create') }}">
-                    <a href="{{ aurl('insurance_companies/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Company') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'specializations-index')
+            <li class="menu-item {{ openMenu('specializations') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-clinic-medical"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Specializations') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('specializations') }}">
+                        <a href="{{ aurl('specializations') }}" class="menu-link">
+                            <div>{{ trans('admin.All Specializations') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'specializations-create')
+                        <li class="menu-item {{ activeMenu('specializations/create') }}">
+                            <a href="{{ aurl('specializations/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Specialization') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('doctors') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-user-md"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Doctors') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('doctors') }}">
-                    <a href="{{ aurl('doctors') }}" class="menu-link">
-                        <div>{{ trans('admin.All Doctors') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('doctors/create') }}">
-                    <a href="{{ aurl('doctors/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Doctor') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'insurance_companies-index')
+            <li class="menu-item {{ openMenu('insurance_companies') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-building"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Insurance Companies') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('insurance_companies') }}">
+                        <a href="{{ aurl('insurance_companies') }}" class="menu-link">
+                            <div>{{ trans('admin.All Companies') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'insurance_companies-create')
+                        <li class="menu-item {{ activeMenu('insurance_companies/create') }}">
+                            <a href="{{ aurl('insurance_companies/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Company') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('packages') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-box"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Packages') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('packages') }}">
-                    <a href="{{ aurl('packages') }}" class="menu-link">
-                        <div>{{ trans('admin.All Packages') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('packages/create') }}">
-                    <a href="{{ aurl('packages/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Package') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'doctors-index')
+            <li class="menu-item {{ openMenu('doctors') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-user-md"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Doctors') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('doctors') }}">
+                        <a href="{{ aurl('doctors') }}" class="menu-link">
+                            <div>{{ trans('admin.All Doctors') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'doctors-create')
+                        <li class="menu-item {{ activeMenu('doctors/create') }}">
+                            <a href="{{ aurl('doctors/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Doctor') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('customers') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-users"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Customers') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('customers') }}">
-                    <a href="{{ aurl('customers') }}" class="menu-link">
-                        <div>{{ trans('admin.All Customers') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('customers/create') }}">
-                    <a href="{{ aurl('customers/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Customer') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'packages-index')
+            <li class="menu-item {{ openMenu('packages') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-box"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Packages') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('packages') }}">
+                        <a href="{{ aurl('packages') }}" class="menu-link">
+                            <div>{{ trans('admin.All Packages') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'packages-create')
+                        <li class="menu-item {{ activeMenu('packages/create') }}">
+                            <a href="{{ aurl('packages/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Package') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('expenses') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-money-bill-alt"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Expenses') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('expenses') }}">
-                    <a href="{{ aurl('expenses') }}" class="menu-link">
-                        <div>{{ trans('admin.All Expenses') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('expenses/create') }}">
-                    <a href="{{ aurl('expenses/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Expense') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'customers-index')
+            <li class="menu-item {{ openMenu('customers') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-users"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Customers') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('customers') }}">
+                        <a href="{{ aurl('customers') }}" class="menu-link">
+                            <div>{{ trans('admin.All Customers') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'customers-create')
+                        <li class="menu-item {{ activeMenu('customers/create') }}">
+                            <a href="{{ aurl('customers/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Customer') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('debts') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-coins"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Debts') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('debts') }}">
-                    <a href="{{ aurl('debts') }}" class="menu-link">
-                        <div>{{ trans('admin.All Debts') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('debts/create') }}">
-                    <a href="{{ aurl('debts/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Debt') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'expenses-index')
+            <li class="menu-item {{ openMenu('expenses') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-money-bill-alt"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Expenses') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('expenses') }}">
+                        <a href="{{ aurl('expenses') }}" class="menu-link">
+                            <div>{{ trans('admin.All Expenses') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'expenses-create')
+                        <li class="menu-item {{ activeMenu('expenses/create') }}">
+                            <a href="{{ aurl('expenses/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Expense') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('payment_methods') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-credit-card"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Payment Method') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('payment_methods') }}">
-                    <a href="{{ aurl('payment_methods') }}" class="menu-link">
-                        <div>{{ trans('admin.Payment Method') }}</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ activeMenu('payment_methods/create') }}">
-                    <a href="{{ aurl('payment_methods/create') }}" class="menu-link">
-                        <div>{{ trans('admin.Add New Payment Method') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @ability('super_admin', 'debts-index')
+            <li class="menu-item {{ openMenu('debts') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-coins"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Debts') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('debts') }}">
+                        <a href="{{ aurl('debts') }}" class="menu-link">
+                            <div>{{ trans('admin.All Debts') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endability
 
-        <!-- Apps & Pages -->
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">{{ trans('admin.Settings') }}</span>
-        </li>
+        @ability('super_admin', 'payment_methods-index')
+            <li class="menu-item {{ openMenu('payment_methods') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-credit-card"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Payment Method') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('payment_methods') }}">
+                        <a href="{{ aurl('payment_methods') }}" class="menu-link">
+                            <div>{{ trans('admin.Payment Method') }}</div>
+                        </a>
+                    </li>
+                    @ability('super_admin', 'payment_methods-create')
+                        <li class="menu-item {{ activeMenu('payment_methods/create') }}">
+                            <a href="{{ aurl('payment_methods/create') }}" class="menu-link">
+                                <div>{{ trans('admin.Add New Payment Method') }}</div>
+                            </a>
+                        </li>
+                    @endability
+                </ul>
+            </li>
+        @endability
 
-        <li class="menu-item {{ openMenu('settings') }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fas fa-cogs"></i>&nbsp;&nbsp;
-                <div>{{ trans('admin.Settings') }}</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ activeMenu('settings') }}">
-                    <a href="{{ aurl('settings') }}" class="menu-link">
-                        <div>{{ trans('admin.Settings') }}</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @role('super_admin')
+            <!-- Apps & Pages -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">{{ trans('admin.Settings') }}</span>
+            </li>
+            <li class="menu-item {{ openMenu('settings') }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="fas fa-cogs"></i>&nbsp;&nbsp;
+                    <div>{{ trans('admin.Settings') }}</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ activeMenu('settings') }}">
+                        <a href="{{ aurl('settings') }}" class="menu-link">
+                            <div>{{ trans('admin.Settings') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endrole
 
     </ul>
 </aside>

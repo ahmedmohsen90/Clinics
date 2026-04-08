@@ -4,9 +4,12 @@
         <div class="card">
             <div class="card-header">
                 <h5>{{ $title }}
-                    <a href="{{ aurl('doctors/create') }}"
-                        class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
-                        {{ trans('admin.Add New Doctor') }}</a>
+                    @ability('super_admin', 'doctors-create')
+                        <a href="{{ aurl('doctors/create') }}"
+                            class="btn btn-pill btn-outline-primary btn-air-primary pull-right"><i class="fas fa-plus"></i>
+                            {{ trans('admin.Add New Doctor') }}</a>
+                    @endability
+
                 </h5>
             </div>
             <div class="card-block row">
@@ -28,24 +31,30 @@
                                         <td>{{ $doctor->mobile }}</td>
                                         <td>
                                             @foreach ($doctor->specializations as $index => $specialization)
-                                                <span class="badge text-bg-success">{{ $specialization->specialization->name }}</span>
+                                                <span
+                                                    class="badge text-bg-success">{{ $specialization->specialization->name }}</span>
                                             @endforeach
                                         </td>
                                         <td>
-                                            <a href="{{ aurl('doctors/view/' . $doctor->id) }}"
-                                                class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                    class="fas fa-eye"></i>
-                                                {{ trans('admin.View') }}</a>
+                                            @ability('super_admin', 'doctors-view')
+                                                <a href="{{ aurl('doctors/view/' . $doctor->id) }}"
+                                                    class="btn btn-pill btn-outline-primary btn-air-primary"><i
+                                                        class="fas fa-eye"></i>
+                                                    {{ trans('admin.Details') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'doctors-update')
+                                                <a href="{{ aurl('doctors/edit/' . $doctor->id) }}"
+                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
+                                                        class="fas fa-edit"></i>
+                                                    {{ trans('admin.Edit') }}</a>
+                                            @endability
+                                            @ability('super_admin', 'doctors-delete')
+                                                <button data-id="{{ $doctor->id }}" data-name="{{ $doctor->name }}"
+                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
+                                                        class="fas fa-trash"></i>
+                                                    {{ trans('admin.Delete') }}</button>
+                                            @endability
 
-                                            <a href="{{ aurl('doctors/edit/' . $doctor->id) }}"
-                                                class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                    class="fas fa-edit"></i>
-                                                {{ trans('admin.Edit') }}</a>
-
-                                            <button data-id="{{ $doctor->id }}" data-name="{{ $doctor->name }}"
-                                                id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                    class="fas fa-trash"></i>
-                                                {{ trans('admin.Delete') }}</button>
                                         </td>
                                     </tr>
                                 @endforeach
