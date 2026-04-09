@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounting;
 use App\Models\CustomerCase;
+use App\Models\Debt;
 use App\Models\Doctor;
+use App\Models\PaymentMethod;
 use App\Models\Specialization;
 use App\Models\SpecializationDoctor;
 use Carbon\Carbon;
@@ -184,4 +187,45 @@ class DoctorController extends Controller
         ]);
         return back()->with('success', 'operation success');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function financials(int $id)
+    {
+        $doctor = Doctor::find($id);
+
+        $debts = Debt::where([
+            'debtable_type' => "App\Models\Doctor",
+            'debtable_id' => $doctor->id,
+        ])->latest()->paginate(50);
+
+        $entitlements = Accounting::where([
+            'operation' => 'minus',
+            'accountingable_type' => "App\Models\Doctor",
+            'accountingable_id' => $doctor->id,
+        ])->sum('amount');
+
+        $collected = Accounting::where([
+            'operation' => 'plus',
+            'accountingable_type' => "App\Models\Doctor",
+            'accountingable_id' => $doctor->id,
+        ])->sum('amount');
+
+        $paymentMethods = PaymentMethod::get();
+
+        return view('admin.insurance_companies.financials', [
+            'title' => trans('admin.Financials') . " - " . $doctor->name,
+            'debts' => $debts,
+            'doctor' => $doctor,
+            'entitlements' => $entitlements,
+            'collected' => $collected,
+            'paymentMethods' => $paymentMethods
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function salaries(int $id) {}
 }

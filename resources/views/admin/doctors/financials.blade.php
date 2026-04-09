@@ -91,10 +91,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Collection') }} -
-                        {{ $doctor->name }}</h5>
+                        {{ $company->name }}</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ aurl('debts/doctors/create') }}" method="POST">
+                <form action="{{ aurl('debts/create') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="col-md-12 text-center">
@@ -120,9 +120,9 @@
                             </select>
                         </div>
 
-                        <input type="hidden" id="doctor_id" name="doctor_id" value="{{ $doctor->id }}">
-                        <input type="hidden" id="debtable_type" name="debtable_type" value="App\Models\Doctor">
-                        <input type="hidden" id="operation" name="operation" value="plus">
+                        <input type="hidden" id="company_id" name="company_id" value="{{ $company->id }}">
+                        <input type="hidden" id="debtable_type" name="debtable_type" value="App\Models\InsuranceCompany">
+                        <input type="hidden" id="operation" name="operation" value="collected">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><i

@@ -41,7 +41,7 @@ class AccountingUpdateListner
             ]);
         }
 
-        if ($data["accountingable_type"] == "App\Models\InsuranceCompany" && $data["operation"] == "plus") {
+        if ($data["operation"] == "plus") {
             $oldAmount = Accounting::where([
                 'accountingable_type' => $data["accountingable_type"],
                 'accountingable_id' => $data["accountingable_id"],

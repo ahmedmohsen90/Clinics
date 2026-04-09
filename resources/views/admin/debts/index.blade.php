@@ -41,8 +41,12 @@
             <div class="card-header">
                 <h5>
                     {{ $title }}
-                    <a class="btn btn-pill btn-outline-success btn-air-success pull-right" href="{{ url('exports/debts') }}"><i class="far fa-file-excel"></i></a>&nbsp;
-                    <a class="btn btn-pill btn-outline-danger btn-air-danger pull-right" href="{{ url('exports/pdf/debts') }}"><i class="fas fa-file-pdf"></i></a>
+                    <a class="btn btn-pill btn-outline-success btn-air-success pull-right"
+                        href="{{ url('exports/debts') }}"><i class="far fa-file-excel"></i></a>&nbsp;
+                    <a class="btn btn-pill btn-outline-danger btn-air-danger pull-right"
+                        href="{{ url('exports/pdf/debts') }}"><i class="fas fa-file-pdf"></i></a>
+                    <button id="create" class="btn btn-pill btn-outline-warning btn-air-warning pull-right"><i
+                            class="fas fa-plus"></i> {{ trans('admin.Add New Debt') }}</button>
                 </h5>
             </div>
             <div class="card-block row">
@@ -82,4 +86,74 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tooltipmodal" aria-hidden="true"
+        id="createModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ trans('admin.Delete') }}</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ aurl('debts/doctors/create') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="operation" value="minus" class="form-control" id="operation">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="model" class="form-label">{{ trans('admin.Doctors') }}<span
+                                    class="redStar">*</span></label>
+                            <select id="doctor_id" name="doctor_id" class="select2 form-select form-select-lg">
+                                @foreach ($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="floating-label" for="amount">{{ trans('admin.Amount') }} <span
+                                    class="redStar">*</span></label>
+                            <input type="text" name="amount" value="{{ old('amount') }}" class="form-control"
+                                id="amount">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="model" class="form-label">{{ trans('admin.Payment Method') }}<span
+                                    class="redStar">*</span></label>
+                            <select id="payment_method_id" name="payment_method_id"
+                                class="select2 form-select form-select-lg">
+                                @foreach ($paymentMethods as $method)
+                                    <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="floating-label" for="description">{{ trans('admin.Description') }} <span
+                                    class="redStar">*</span></label>
+                            <input type="text" name="description" value="{{ old('description') }}" class="form-control"
+                                id="description">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
+                            {{ trans('admin.Close') }}</button>
+                        <button type="submit"
+                            class="btn btn-pill btn-outline-success btn-air-success">{{ trans('admin.Save') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @push('script')
+        <script>
+            $(document).ready(function() {
+                $("#create").click(function() {
+                    $("#createModal").modal('show');
+                });
+
+            });
+        </script>
+    @endpush
 @endsection

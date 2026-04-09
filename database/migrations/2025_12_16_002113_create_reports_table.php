@@ -17,6 +17,7 @@ return new class extends Migration
             $table->morphs('reportable');
             $table->double('amount', 8, 2);
             $table->enum('operation', ['plus', 'minus'])->{'plus'};
+            $table->string("description")->nullable();
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
         });

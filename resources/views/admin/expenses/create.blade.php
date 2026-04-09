@@ -10,6 +10,15 @@
                 @csrf
                 <div class="card-body">
                     <div class="mb-3">
+                        <label for="expens_type_id" class="form-label">{{ trans('admin.Types') }}<span
+                                class="redStar">*</span></label>
+                        <select id="expens_type_id" name="expens_type_id" class="select2 form-select form-select-lg">
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label class="floating-label" for="amount">{{ trans('admin.Amount') }} <span
                                 class="redStar">*</span></label>
                         <input type="text" name="amount" value="{{ old('amount') }}" class="form-control"

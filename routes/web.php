@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DataEntryController;
 use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\ExpensTypeController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReservationController;
@@ -101,6 +102,8 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('create', [DoctorController::class, 'create']);
             Route::get('edit/{id}', [DoctorController::class, 'edit']);
             Route::get('view/{id}', [DoctorController::class, 'show']);
+            Route::get('financials/{id}', [DoctorController::class, 'financials']);
+            Route::get('salaries/{id}', [DoctorController::class, 'salaries']);
             Route::get('by_specialization/{id}', [DoctorController::class, 'by_specialization']);
             Route::post('create', [DoctorController::class, 'store']);
             Route::post('update/{id}', [DoctorController::class, 'update']);
@@ -143,6 +146,15 @@ Route::middleware([Lang::class])->group(function () {
             Route::post('create', [ExpenseController::class, 'store']);
             Route::post('update/{id}', [ExpenseController::class, 'update']);
             Route::post('delete', [ExpenseController::class, 'destroy']);
+
+            Route::group(['prefix' => 'types'], function () {
+                Route::get('', [ExpensTypeController::class, 'index']);
+                Route::get('create', [ExpensTypeController::class, 'create']);
+                Route::get('edit/{id}', [ExpensTypeController::class, 'edit']);
+                Route::post('create', [ExpensTypeController::class, 'store']);
+                Route::post('update/{id}', [ExpensTypeController::class, 'update']);
+                Route::post('delete', [ExpensTypeController::class, 'destroy']);
+            });
         });
 
         Route::group(['prefix' => 'packages'], function () {
@@ -159,6 +171,7 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('create', [DebtController::class, 'create']);
             Route::get('edit/{id}', [DebtController::class, 'edit']);
             Route::get('collection/{id}', [DebtController::class, 'collection']);
+            Route::post('doctors/create', [DebtController::class, 'doctors']);
             Route::post('create', [DebtController::class, 'store']);
             Route::post('update/{id}', [DebtController::class, 'update']);
             Route::post('delete', [DebtController::class, 'destroy']);

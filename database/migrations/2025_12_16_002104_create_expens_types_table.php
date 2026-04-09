@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('expens_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->index();
-            $table->foreignId('expens_type_id')->index();
-            $table->text('description');
-            $table->double('amount', 8, 2);
+            $table->foreignId('branch_id')->index();
+            $table->string("name",70)->unique();
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('expens_type_id')->references('id')->on('expens_types')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('expens_types');
     }
 };

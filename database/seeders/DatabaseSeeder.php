@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
+use App\Models\ExpensType;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;

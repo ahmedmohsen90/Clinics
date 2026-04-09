@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Expenses;
+use App\Models\ExpensType;
 use App\Models\Report;
 use Illuminate\Http\Request;
 
@@ -25,8 +26,10 @@ class ExpenseController extends Controller
      */
     public function create()
     {
+        $types = ExpensType::get();
         return view('admin.expenses.create', [
             'title' => trans('admin.Add New Expense'),
+            'types' => $types
         ]);
     }
 
@@ -36,23 +39,30 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'expens_type_id'          => 'required',
             'amount'          => 'required',
             'description'        => 'required',
         ], [], [
+            'expens_type_id'          => trans('admin.Type'),
             'amount'          => trans('admin.Amount'),
             'description'        => trans('admin.Description'),
         ]);
 
         $expense = new Expenses();
         $expense->company_id = session('company_id');
+        $expense->expens_type_id = $request->expens_type_id;
         $expense->amount = $request->amount;
         $expense->description = $request->description;
         $expense->save();
 
+        $type = ExpensType::find($request->expens_type_id);
+
         Report::create([
+            'company_id' => session('company_id'),
             'reportable_type' => "App\Models\Expenses",
             'reportable_id' => $expense->id,
             'amount' => $request->amount,
+            'description' => trans('admin.Expenses') .  " - " . $type->name,
             'operation' => 'minus',
         ]);
 
@@ -92,6 +102,7 @@ class ExpenseController extends Controller
         ]);
 
         $expense = Expenses::find($id);
+        $expense->expens_type_id = $request->expens_type_id;
         $expense->amount = $request->amount;
         $expense->description = $request->description;
         $expense->save();

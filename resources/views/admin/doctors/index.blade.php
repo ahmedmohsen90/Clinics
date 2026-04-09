@@ -14,7 +14,7 @@
             </div>
             <div class="card-block row">
                 <div class="col-sm-12 col-lg-12 col-xl-12">
-                    <div class="table-responsive">
+                    <div class="">
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -36,25 +36,50 @@
                                             @endforeach
                                         </td>
                                         <td>
-                                            @ability('super_admin', 'doctors-view')
-                                                <a href="{{ aurl('doctors/view/' . $doctor->id) }}"
-                                                    class="btn btn-pill btn-outline-primary btn-air-primary"><i
-                                                        class="fas fa-eye"></i>
-                                                    {{ trans('admin.Details') }}</a>
-                                            @endability
-                                            @ability('super_admin', 'doctors-update')
-                                                <a href="{{ aurl('doctors/edit/' . $doctor->id) }}"
-                                                    class="btn btn-pill btn-outline-warning btn-air-warning"><i
-                                                        class="fas fa-edit"></i>
-                                                    {{ trans('admin.Edit') }}</a>
-                                            @endability
-                                            @ability('super_admin', 'doctors-delete')
-                                                <button data-id="{{ $doctor->id }}" data-name="{{ $doctor->name }}"
-                                                    id="delete" class="btn btn-pill btn-outline-danger btn-air-danger"><i
-                                                        class="fas fa-trash"></i>
-                                                    {{ trans('admin.Delete') }}</button>
-                                            @endability
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ trans('admin.List') }}
+                                                </button>
+                                                <ul class="dropdown-menu">
 
+                                                    @ability('super_admin', 'doctors-view')
+                                                        <a href="{{ aurl('doctors/view/' . $doctor->id) }}"
+                                                            class="dropdown-item"><i class="fas fa-eye"></i>
+                                                            {{ trans('admin.Actions') }}</a>
+                                                    @endability
+
+                                                    @role('super_admin')
+                                                        <a href="{{ aurl('doctors/financials/' . $doctor->id) }}"
+                                                            class="dropdown-item"><i
+                                                                class="fas fa-money-check"></i>&nbsp;{{ trans('admin.Financials') }}</a>
+                                                    @endrole
+
+                                                    @role('super_admin')
+                                                        <a href="{{ aurl('doctors/salaries/' . $doctor->id) }}"
+                                                            class="dropdown-item"><i
+                                                                class="fas fa-money-bill-alt"></i>&nbsp;{{ trans('admin.Salaries') }}</a>
+                                                    @endrole
+
+                                                    @ability('super_admin', 'doctors-update')
+                                                        <a href="{{ aurl('doctors/edit/' . $doctor->id) }}"
+                                                            class="dropdown-item"><i class="fas fa-edit"></i>
+                                                            {{ trans('admin.Edit') }}</a>
+                                                    @endability
+
+                                                    @ability('super_admin', 'doctors-delete')
+                                                        <li>
+                                                            <hr class="dropdown-divider" />
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" id="delete" href="#"><i
+                                                                    class="fas fa-trash"></i>
+                                                                {{ trans('admin.Delete') }}</a>
+                                                        </li>
+                                                    @endability
+
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

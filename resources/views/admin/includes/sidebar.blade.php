@@ -328,6 +328,13 @@
                             <div>{{ trans('admin.All Expenses') }}</div>
                         </a>
                     </li>
+                    @ability('super_admin', 'expenses_types-index')
+                        <li class="menu-item {{ activeMenu('expenses/types') }}">
+                            <a href="{{ aurl('expenses/types') }}" class="menu-link">
+                                <div>{{ trans('admin.Expenses Types') }}</div>
+                            </a>
+                        </li>
+                    @endability
                     @ability('super_admin', 'expenses-create')
                         <li class="menu-item {{ activeMenu('expenses/create') }}">
                             <a href="{{ aurl('expenses/create') }}" class="menu-link">

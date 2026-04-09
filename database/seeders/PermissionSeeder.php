@@ -283,6 +283,11 @@ class PermissionSeeder extends Seeder
         ]);
         Permission::create([
             'table_id' => $table->id,
+            'name' => 'expenses_types-index',
+            'display_name' => 'Expenses Types',
+        ]);
+        Permission::create([
+            'table_id' => $table->id,
             'name' => 'expenses-create',
             'display_name' => 'Create Expenses',
         ]);
@@ -306,6 +311,11 @@ class PermissionSeeder extends Seeder
             'table_id' => $table->id,
             'name' => 'debts-index',
             'display_name' => 'All Debts',
+        ]);
+        Permission::create([
+            'table_id' => $table->id,
+            'name' => 'debts-create',
+            'display_name' => 'Add New Debt',
         ]);
         Permission::create([
             'table_id' => $table->id,
