@@ -8,25 +8,26 @@
                 <div class="card-body">
 
                     <div class="mb-3">
-                        <label for="customer" class="form-label">{{ trans('admin.Customer') }}</label>
-                        <select id="customer" name="customer" class="select2 form-select form-select-lg"
-                            data-allow-clear="true">
-                            <option selected disabled>{{ trans('admin.Select Customer') }}</option>
-                            @foreach ($customers as $customer)
-                                <option {{ $case->customer_id == $customer->id ? 'selected' : '' }}
-                                    value="{{ $customer->id }}">{{ $customer->name }} - {{ $customer->mobile }}
-                                </option>
-                            @endforeach
+                        <label for="customer" class="form-label">{{ trans('admin.Customer') }}<span
+                                class="redStar">*</span></label>
+                        <select id="customer" name="customer" class="select2 form-select form-select-lg">
+                            <option value="{{ $customer->id }}" {{ $customer->id == $case->customer_id ? 'selected' : '' }}
+                                data-company_id="{{ isset($customer->company) ? $customer->company->insurance_company_id : '' }}"
+                                data-company_name="{{ isset($customer->company) ? $customer->company->company->name : '' }}"
+                                data-percentag="{{ isset($customer->company) ? $customer->company->company_percentage : '' }}">
+                                {{ $customer->name }} - {{ $customer->mobile }}
+                            </option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="specialization" class="form-label">{{ trans('admin.Specialization') }}</label>
+                        <label for="specialization" class="form-label">{{ trans('admin.Specialization') }}<span
+                                class="redStar">*</span></label>
                         <select id="specialization" name="specialization" class="select2 form-select form-select-lg"
                             data-allow-clear="true">
-                            <option selected disabled>{{ trans('admin.Select Specialization') }}</option>
+                            <option disabled>{{ trans('admin.Select Specialization') }}</option>
                             @foreach ($specializations as $specialization)
-                                <option {{ $case->specialization_id == $specialization->id ? 'selected' : '' }}
+                                <option {{ $specialization->id == $case->specialization_id ? 'selected' : '' }}
                                     value="{{ $specialization->id }}" data-price="{{ $specialization->price }}">
                                     {{ $specialization->name }}</option>
                             @endforeach
@@ -34,12 +35,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="doctor" class="form-label">{{ trans('admin.Doctor') }}</label>
+                        <label for="doctor" class="form-label">{{ trans('admin.Doctor') }}<span
+                                class="redStar">*</span></label>
                         <select id="doctor" name="doctor" class="select2 form-select form-select-lg"
                             data-allow-clear="true">
-                            <option selected disabled>{{ trans('admin.Select Doctor') }}</option>
                             @foreach ($doctors as $doctor)
-                                <option {{ $case->doctor_id == $doctor->id ? 'selected' : '' }}
+                                <option {{ $doctor->id == $case->doctor_id ? 'selected' : '' }}
                                     value="{{ $doctor->id }}">
                                     {{ $doctor->name }}</option>
                             @endforeach
@@ -51,28 +52,43 @@
                                 class="redStar">*</span></label>
                         <select id="company" name="company" class="select2 form-select form-select-lg"
                             data-allow-clear="true">
-                            <option value="0">{{ trans('admin.Does not belong') }}</option>
-                            @foreach ($companies as $company)
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endforeach
+                            @if (isset($customer->company) ? $customer->company->insurance_company_id : '')
+                                <option value="{{ $customer->company->insurance_company_id }}">
+                                    {{ $customer->company->company->name }}</option>
+                            @else
+                                <option value="0">{{ trans('admin.Does not belong') }}</option>
+                            @endif
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="floating-label" for="amount">{{ trans('admin.Customer Amount') }} <span
                                 class="redStar">*</span></label>
-                        <input type="text" name="amount" value="{{ old('amount') }}" class="form-control"
+                        <input type="text" name="amount" value="{{ $case->customer_amount }}" class="form-control"
                             id="amount">
                     </div>
 
-                    <div id="company_percent_area" style="display: none">
+                    <div id="company_percent_area" style=" {{ isset($customer->company) ? '' : 'display: none' }}">
                         <div class="mb-3">
                             <label class="floating-label" for="company_amount">{{ trans('admin.Company Amount') }} <span
                                     class="redStar">*</span></label>
-                            <input type="text" name="company_amount" value="{{ old('company_amount') }}"
+                            <input type="text" name="company_amount" value="{{ $case->company_amount }}"
                                 class="form-control" id="company_amount">
                         </div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="payment_method" class="form-label">{{ trans('admin.Payment Method') }}<span
+                                class="redStar">*</span></label>
+                        <select id="payment_method" name="payment_method" class="select2 form-select form-select-lg"
+                            data-allow-clear="true">
+                            @foreach ($paymentMethods as $method)
+                                <option {{ $method->id == $case->payment_method_id ? 'selected' : '' }}
+                                    value="{{ $method->id }}">{{ $method->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="mb-3">
                         <label class="floating-label" for="note">{{ trans('admin.Note') }}</label>
                         <textarea name="note" class="form-control" rows="4" id="note">{{ $case->note }}</textarea>
@@ -90,11 +106,18 @@
     @push('script')
         <script>
             $(document).ready(function() {
-                $("#specialization").change(function() {
-                    var id = $(this).val();
-                    var price = $(this).find(':selected').attr('data-price');
-                    $("#amount").val(price);
+                let price = 0;
+                let percentage = 0;
 
+                $("#specialization").change(function() {
+                    price = $(this).find(':selected').attr('data-price');
+                    var customerAmount = (price * percentage) / 100;
+
+                    $("#amount").val(customerAmount);
+
+                    $("#company_amount").val(price - customerAmount);
+
+                    var id = $(this).val();
                     $.ajax({
                         type: "GET",
                         url: "{{ aurl('doctors/by_specialization') }}/" + id,
@@ -123,6 +146,19 @@
                         $("#company_percent_area").hide('slow')
                     }
                 })
+
+                var company_name = $("#customer").find(':selected').attr('data-company_name');
+                var company_id = $("#customer").find(':selected').attr('data-company_id');
+                percentage = $("#customer").find(':selected').attr('data-percentag');
+
+                if (company_id != "") {
+                    $("#company").empty();
+                    $("#company").append("<option value='0'>{{ trans('admin.Does not belong') }}</option>")
+                    $("#company").append("<option selected value='" + company_id + "'>" + company_name +
+                        "</option>")
+                    $("#company_percent_area").show('slow')
+                }
+
             });
         </script>
     @endpush

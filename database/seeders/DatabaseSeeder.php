@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
         Setting::create([
             'company_id' => $company->id,
             'name_ar' => "عناية",
-            'name_en' => "MediCare Clinics"
+            'name_en' => "Enaya"
         ]);
 
         $this->call([

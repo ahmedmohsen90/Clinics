@@ -8,7 +8,7 @@
         <div class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column">
             <div>
                  {{ date('Y') }} &copy; {{ settings()->name }} , {{ trans('admin.Created & Developed by') }} <a
-                    href="https://www.linkedin.com/in/engmohsenit" target="_blank" class="fw-medium">Ahmed Mohsen</a>
+                    href="https://www.linkedin.com/in/engmohsenit" target="_blank" class="fw-medium">YQ Waves</a>
             </div>
 
         </div>

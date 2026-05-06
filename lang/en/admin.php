@@ -1192,7 +1192,7 @@ return [
     'Expenses Types' => 'Expenses Types',
     'List' => 'List',
     'Salaries' => 'Salaries',
-    '' => '',
+    'Sessions' => 'Sessions',
     '' => '',
     '' => '',
     '' => '',

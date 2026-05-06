@@ -58,14 +58,14 @@ class CustomerCaseController extends Controller
     {
         $request->validate([
             'customer'          => 'required',
-            'specialization'          => 'required',
+            'specialization'    => 'required',
             'doctor'          => 'required',
             'amount'          => 'required',
         ], [], [
             'customer'          => trans('admin.Customer'),
-            'specialization'          => trans('admin.Specialization'),
+            'specialization'    => trans('admin.Specialization'),
             'doctor'          => trans('admin.Doctor'),
-            'amount'          => trans('admin.Amount'),
+            'amount'          => trans('admin.Customer Amount'),
         ]);
 
         $case = new CustomerCase();
@@ -140,11 +140,12 @@ class CustomerCaseController extends Controller
      */
     public function edit(string $id)
     {
-        $specializations = Specialization::get();
-        $customers = Customer::get();
         $case = CustomerCase::find($id);
-        $companies = InsuranceCompany::where('status', 1)->get();
 
+        $companies = InsuranceCompany::where('status', 1)->get();
+        $specializations = Specialization::get();
+        $customer = Customer::with('company')->first();
+        $paymentMethods = PaymentMethod::get();
         $doctors = Doctor::whereHas('specializations', function ($query) use ($case) {
             $query->where('specialization_id', $case->specialization_id);
         })->get();
@@ -152,10 +153,12 @@ class CustomerCaseController extends Controller
         return view('admin.cases.edit', [
             'title' => $case->customer->name,
             'specializations' => $specializations,
-            'customers' => $customers,
             'case' => $case,
-            'doctors' => $doctors,
-            'companies' => $companies
+            'companies' => $companies,
+            'specializations' => $specializations,
+            'customer' => $customer,
+            'paymentMethods' => $paymentMethods,
+            'doctors' => $doctors
         ]);
     }
 
@@ -173,16 +176,36 @@ class CustomerCaseController extends Controller
             'customer'          => trans('admin.Customer'),
             'specialization'          => trans('admin.Specialization'),
             'doctor'          => trans('admin.Doctor'),
-            'amount'          => trans('admin.Amount'),
+            'amount'          => trans('admin.Customer Amount'),
         ]);
 
         $case = CustomerCase::find($id);
-        $case->customer_id = $request->customer;
         $case->specialization_id = $request->specialization;
         $case->doctor_id = $request->doctor;
-        $case->amount = $request->amount;
+        $case->customer_amount = $request->amount;
+        $case->company_amount = $request->company_amount;
+        $case->price = $request->amount + $request->company_amount;
         $case->note = $request->note;
+        $case->payment_method_id = $request->payment_method;
         $case->save();
+
+        if ($request->company) {
+            $customer = Customer::with('company')->where('id', $request->customer)->first();
+            $caseInsurance = CaseInsurance::where(['insurance_company_id' => $request->company, 'customer_case_id' => $case->id])->first();
+            if ($caseInsurance) {
+                CaseInsurance::where(['insurance_company_id' => $request->company, 'customer_case_id' => $case->id])->update([
+                    'percent' => $customer->company->company_percentage,
+                    'amount' => $request->company_amount,
+                ]);
+            } else {
+                CaseInsurance::create([
+                    'insurance_company_id' => $request->company,
+                    'customer_case_id' => $case->id,
+                    'percent' => $customer->company->company_percentage,
+                    'amount' => $request->company_amount,
+                ]);
+            }
+        }
 
         userLogs([
             'model' => '\App\Models\CustomerCase',
@@ -279,5 +302,9 @@ class CustomerCaseController extends Controller
         ]);
 
         return back()->with('success', 'operation success');
+    }
+
+    public function endCase(Request $request , $id){
+
     }
 }

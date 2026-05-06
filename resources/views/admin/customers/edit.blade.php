@@ -80,7 +80,7 @@
                     </div>
 
                     <div id="insuranceArea"
-                        style="{{ isset($customer->company) && $customer->company->insurance_company_id == $company->id ? '' : 'display: none' }}">
+                        style="{{ isset($customer->company->insurance_company_id) ? '' : 'display: none' }}">
                         <div class="mb-3">
                             <label class="floating-label" for="insurance_number">{{ trans('admin.Insurance Number') }}
                                 <span class="redStar">*</span></label>

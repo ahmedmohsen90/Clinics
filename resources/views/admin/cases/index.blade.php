@@ -22,6 +22,7 @@
                                     <th>{{ trans('admin.Mobile') }}</th>
                                     <th>{{ trans('admin.Specialization') }}</th>
                                     <th>{{ trans('admin.Doctor') }}</th>
+                                    <th>{{ trans('admin.Payment Status') }}</th>
                                     <th>{{ trans('admin.Status') }}</th>
                                     <th>{{ trans('admin.Actions') }}</th>
                                 </tr>
@@ -33,6 +34,18 @@
                                         <td>{{ $case->customer->mobile }}</td>
                                         <td>{{ $case->specialization->name }}</td>
                                         <td>{{ $case->doctor->name }}</td>
+                                        <td>
+                                            @if ($case->status->payment_status == 'pending')
+                                                <span
+                                                    class="badge text-bg-warning text-lg">{{ trans('admin.pending') }}</span>
+                                            @elseif ($case->status->status == 'paid')
+                                                <span
+                                                    class="badge text-bg-success text-lg">{{ trans('admin.Paid') }}</span>
+                                            @elseif ($case->status->status == 'unpaid')
+                                                <span
+                                                    class="badge text-bg-primary text-lg">{{ trans('admin.Unpaid') }}</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($case->status->status == 'pending')
                                                 <span
@@ -47,7 +60,6 @@
                                                 <span
                                                     class="badge text-bg-danger text-lg">{{ trans('admin.' . $case->status->status) }}</span>
                                             @endif
-
                                         </td>
 
                                         <td>

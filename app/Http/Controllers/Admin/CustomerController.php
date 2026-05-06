@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\CustomerCase;
 use App\Models\InsuranceCompany;
 use App\Models\InsuranceCustomer;
 use Carbon\Carbon;
@@ -90,7 +91,13 @@ class CustomerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $customer = Customer::with('company')->where('id', $id)->first();
+        $cases = CustomerCase::with('specialization', 'doctor')->where('customer_id', $id)->paginate(50);
+        return view('admin.customers.view', [
+            'title' => $customer->name,
+            'customer' => $customer,
+            'cases' => $cases
+        ]);
     }
 
     /**

@@ -114,6 +114,7 @@ Route::middleware([Lang::class])->group(function () {
             Route::get('', [CustomerController::class, 'index']);
             Route::get('create', [CustomerController::class, 'create']);
             Route::get('edit/{id}', [CustomerController::class, 'edit']);
+            Route::get('view/{id}', [CustomerController::class, 'show']);
             Route::post('create', [CustomerController::class, 'store']);
             Route::post('update/{id}', [CustomerController::class, 'update']);
             Route::post('delete', [CustomerController::class, 'destroy']);
